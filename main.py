@@ -1,27 +1,44 @@
 import json
+import keyboard
 from pprint import pprint
 
 
-def read_template(path = "template\\tags.json"):
+def get_tag_template(path = "template\\tags.json"):
     with open(path, "r") as file_ref:
-        d = json.load(file_ref)
-        return d
+        raw_data = json.load(file_ref)
+        return raw_data
 
-def update_template(updated_dict, path = "template\\tags.json"):
+def set_tag_template(updated_dict, path = "template\\tags.json"):
     with open(path, "r+") as file_ref:
         json.dump(updated_dict, file_ref, indent=4, sort_keys=True)
 
+def is_duplicate(lst, dict):
+    if not dict['write'] in lst:
+        return 'pass'
+    return 'duplicate'
+
+def create_tag(all_tags, dict):
+    all_tags.append(dict)
+    keyboard.add_abbreviation(dict["write"], dict["switch_to"])
+
+def retrive_tag(all_tags, key='Beniz'):
+    print("ASDDDD")
+    for asd in all_tags:
+        print(asd)
+
+def update_tag(all_tags, dict, newDict):
+
+
+
 
 def main():
+    all_tags = get_tag_template()['tags']
+    #pprint(all_tags)
+    #pprint(is_duplicate(all_tags, {'switch_to': '[currentBuild]', 'write': '@build'}))
 
-    all_categories = read_template()
-    pprint(all_categories)
+    create_tag(all_tags, dict(write = "666", switch_to = "777"))
 
-    all_categories["new"] = "asd"
-    all_categories["tags"].append(dict(write = "123", switch_to = "321"))
-    update_template(all_categories)
-    pprint(read_template())
-
+    print(retrive_tag(all_tags, 'Beniz'))
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,4 @@
 {
-    "new": "asd",
     "tags": [
         {
             "switch_to": "[currentBuild]",
