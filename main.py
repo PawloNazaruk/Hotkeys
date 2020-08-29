@@ -14,14 +14,20 @@ def set_tag_template(tags, path = "template\\tags.json"):
         json.dump(dict(tags=tags), file_ref, indent=4, sort_keys=True)
         file_ref.truncate()
 
-def tag_exist(tags, dict):
+def tag_key_exist(tags, dict):
     for tag in tags:
         if dict['name'] == tag['name']:
             return 'exist'
     return None
 
+def tag_exist(tags, dict):
+    for tag in tags:
+        if dict == tag:
+            return 'exist'
+    return None
+
 def create_tag(tags, dict):
-    if tag_exist(tags, dict) == None:
+    if tag_key_exist(tags, dict) == None:
         tags.append(dict)
         keyboard.add_abbreviation(dict["name"], dict["switch_to"])
         print("Tag created.")
@@ -32,7 +38,7 @@ def create_tag(tags, dict):
 def update_tag(tags, dict, new_dict):
     if tag_exist(tags, dict) != None:
         tags.pop(tags.index(dict))
-        if tag_exist(tags, new_dict) == None:
+        if tag_key_exist(tags, new_dict) == None:
             tags.append(new_dict)
             keyboard.add_abbreviation(dict['name'], "Tag will be cleared with the new start of the program.")
             keyboard.add_abbreviation(dict['name'], dict['switch_to'])
@@ -52,16 +58,25 @@ def delete_tag(tags, dict):
     else:
         print("Tag to delete doesn't exist.")
 
+def add_abreviation(dict, asd):
+    pass
 
 
 def main():
     tags = get_tag_template()['tags']
-    create_tag(tags, dict(name = "667", switch_to = "777"))
-    pprint(tags)
-    #update_tag(tags, dict(name = "667", switch_to = "112"), dict(name = "667", switch_to = "333"))
     #pprint(tags)
-    delete_tag(tags, dict(name = "667", switch_to = "333"))
-    pprint(tags)
+    for dict in tags:
+
+        dict['switch_to'] = dict['switch_to'].replace('[currentBuild]', 'Build123')
+        print(dict)
+        keyboard.add_abbreviation(dict['name'], dict['switch_to'])
+
+    while True:
+        continue
+
+
+
+
 
 
 if __name__ == "__main__":
