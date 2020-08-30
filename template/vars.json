@@ -1,0 +1,10 @@
+{
+  "vars": [
+    {
+        "[currentBuild]": "Build12345678989"
+    },
+    {
+        "[asd]": "qwe"
+    }
+  ]
+}

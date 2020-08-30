@@ -58,18 +58,19 @@ def delete_tag(tags, dict):
     else:
         print("Tag to delete doesn't exist.")
 
-def add_abreviation(dict, asd):
-    pass
+def create_abbreviation_from_file(tags, vars):
+    for dict in tags:
+        for var in vars:
+            for key, val in var.items():
+                dict['switch_to'] = dict['switch_to'].replace(key, val)
+                keyboard.add_abbreviation(dict['name'], dict['switch_to'])
 
 
 def main():
     tags = get_tag_template()['tags']
-    #pprint(tags)
-    for dict in tags:
+    vars = get_tag_template("template\\vars.json")['vars']
+    create_abbreviation_from_file(tags, vars)
 
-        dict['switch_to'] = dict['switch_to'].replace('[currentBuild]', 'Build123')
-        print(dict)
-        keyboard.add_abbreviation(dict['name'], dict['switch_to'])
 
     while True:
         continue
