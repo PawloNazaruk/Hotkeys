@@ -60,15 +60,23 @@ def delete_tag(tags, dict):
 
 def create_abbreviation_from_file(tags, vars):
     for dict in tags:
+        status = 'to_create'
         for var in vars:
             for key, val in var.items():
-                dict['switch_to'] = dict['switch_to'].replace(key, val)
-                keyboard.add_abbreviation(dict['name'], dict['switch_to'])
+                if dict['switch_to'] == key:
+                    dict['switch_to'] = dict['switch_to'].replace(key, val)
+                    print(dict)
+                    keyboard.add_abbreviation(dict['name'], dict['switch_to'])
+                    status = 'created'
+        if status == 'to_create':
+            keyboard.add_abbreviation(dict['name'], dict['switch_to'])
+
 
 
 def main():
     tags = get_tag_template()['tags']
     vars = get_tag_template("template\\vars.json")['vars']
+
     create_abbreviation_from_file(tags, vars)
 
 
