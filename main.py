@@ -33,7 +33,8 @@ def create_tag(tags, dict):
         print("Tag created.")
         set_tag_template(tags)
     else:
-        print("Tag couldn't be created, as is already existing.")
+        print("Tag couldn't be created, tag already exist.")
+        return "Duplicate"
 
 def update_tag(tags, dict, new_dict):
     if tag_exist(tags, dict) != None:
