@@ -12,7 +12,7 @@ class MyApp:
         self.myContainer1.pack(fill=X)
 
         self.button_NewTag = Button(self.myContainer1, text="New Tag", bg="green")
-        self.button_NewTag.bind("<Button-1>", lambda e: NewWindow(tags, self.myParent, "New Tag"))
+        self.button_NewTag.bind("<Button-1>", lambda e: NewTagWindow(tags, self.myParent, "New Tag"))
         self.button_NewTag.pack(side=TOP, fill=X)
 
         self.myScrollable_frame = ScrollableFrame(self.myContainer1)
@@ -57,7 +57,7 @@ class MyApp:
         self.myButtonCancel.pack()"""
 
 
-class NewWindow(Toplevel):
+class NewTagWindow(Toplevel):
 
     def __init__(self, tags, master=None, title="New Window"):
         super().__init__(master=master)
@@ -87,11 +87,8 @@ class NewWindow(Toplevel):
         self.button_Cancel.bind("<Button-1>", self.buttonCancelClick)
         self.button_Cancel.pack(side=RIGHT)
 
-    def buttonCancelClick(self, event):
-        report_event(event)
-        self.destroy()
 
-    def buttonCreateClick(self, event, master):
+    def buttonCreateClick(self, event):
         report_event(event)
         self.myDict = dict(name="", switch_to="")
 
@@ -106,10 +103,12 @@ class NewWindow(Toplevel):
             return
 
         if create_tag(tags, self.myDict) == "Duplicate":
+            AlertWindow(self)
+            """
             self.alertWindow = Toplevel(self)
             self.alertWindow.title("Alert")
             self.label_Alert = Label(self.alertWindow, text="There is already a tag with this Name.", bg="red")
-            self.label_Alert.pack()
+            self.label_Alert.pack()"""
             return
 
         print(self.myDict)
@@ -121,9 +120,20 @@ class NewWindow(Toplevel):
         self.geometry("700x500")
 
 
+    def buttonCancelClick(self, event):
+        report_event(event)
+        self.destroy()
 
 
+class AlertWindow(Toplevel):
 
+    def __init__(self, master=None, title="Alert", text="temp"):
+        super().__init__(master=master)
+        self.title(title)
+        self.geometry("200x200")
+
+        self.label_Alert = Label(self, text=text)
+        self.label_Alert.pack()
 
 
 
