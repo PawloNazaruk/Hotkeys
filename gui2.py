@@ -59,7 +59,7 @@ class MyApp:
 
 class NewTagWindow(Toplevel):
 
-    def __init__(self, tags, master=None, title="New Window"):
+    def __init__(self, master=None, title="New Window"):
         super().__init__(master=master)
         self.title(title)
         self.geometry("700x500")
@@ -95,29 +95,8 @@ class NewTagWindow(Toplevel):
         self.myDict["name"] = self.entry_Name.get()
         self.myDict["switch_to"] = self.text_Switch_to.get("1.0", END)[:-1]
 
-        if self.myDict["name"] == "" or self.myDict["switch_to"] == "":
-            self.alertWindow = Toplevel(self)
-            self.alertWindow.title("Alert")
-            self.label_Alert = Label(self.alertWindow, text="Fill both inserts.", bg="red")
-            self.label_Alert.pack()
-            return
-
-        if create_tag(tags, self.myDict) == "Duplicate":
-            AlertWindow(self)
-            """
-            self.alertWindow = Toplevel(self)
-            self.alertWindow.title("Alert")
-            self.label_Alert = Label(self.alertWindow, text="There is already a tag with this Name.", bg="red")
-            self.label_Alert.pack()"""
-            return
-
-        print(self.myDict)
-        create_tag(tags, self.myDict)
-
-        self.destroy()
-        super().__init__(master=master)
-        self.title(title)
-        self.geometry("700x500")
+        self.state = create_tag(tags, self.myDict)
+        AlertWindow(self, title="Alert", text=self.state)
 
 
     def buttonCancelClick(self, event):
