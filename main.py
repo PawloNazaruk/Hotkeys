@@ -37,20 +37,21 @@ def create_tag(tags, myDict):
     print("Tag created.")
     set_tag_template(tags)
 
+def update_tag(tags, myDict, newDict):
+    if not tag_exist(tags, myDict):
+        return "Tag doesn't exist."
 
-def update_tag(tags, myDict, new_dict):
-    if tag_exist(tags, myDict) != None:
-        tags.pop(tags.index(myDict))
-        if tag_key_exist(tags, new_dict) == None:
-            tags.append(new_dict)
-            keyboard.add_abbreviation(myDict['name'], "Tag will be cleared with the new start of the program.")
-            keyboard.add_abbreviation(myDict['name'], myDict['switch_to'])
-            print("Tag was updated.")
-            set_tag_template(tags)
-        else:
-            print("The name of the tag is already used.")
-    else:
-        print("Tag couldn't be found.")
+    tags.pop(tags.index(myDict))
+    if tag_key_exist(tags, newDict):
+        tags.append(myDict)
+        return "The name of the tag is already used."
+
+    tags.append(newDict)
+    keyboard.add_abbreviation(myDict['name'], "Tag will be cleared with the new start of the program.")
+    keyboard.add_abbreviation(myDict['name'], myDict['switch_to'])
+    print("Tag was updated.")
+    set_tag_template(tags)
+
 
 def delete_tag(tags, myDict):
     if tag_exist(tags, myDict) != None:
@@ -80,12 +81,12 @@ def main():
     tags = get_tag_template("template\\tags.json")['tags']
     vars = get_tag_template("template\\vars.json")['vars']
 
-    asd = dict(name="asd456", switch_to="qwe")
+    asd = dict(name="@Benon", switch_to="Beniz")
+
 
     create_tag(tags, asd)
-    #print(create_tag(tags, asd))
 
-    create_abbreviation_from_file(tags, vars)
+    #create_abbreviation_from_file(tags, vars)
 
 
     while True:
