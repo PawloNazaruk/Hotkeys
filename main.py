@@ -47,22 +47,24 @@ def update_tag(tags, myDict, newDict):
         return "The name of the tag is already used."
 
     tags.append(newDict)
-    keyboard.add_abbreviation(myDict['name'], "Tag will be cleared with the new start of the program.")
+    keyboard.add_abbreviation(myDict['name'], myDict['name'])
     keyboard.add_abbreviation(myDict['name'], myDict['switch_to'])
     print("Tag was updated.")
     set_tag_template(tags)
 
 
 def delete_tag(tags, myDict):
-    if tag_exist(tags, myDict) != None:
-        tags.pop(tags.index(myDict))
-        keyboard.add_abbreviation(myDict['name'], "Tag will be cleared with the new start of a program.")
-        print("Tag was deleted.")
-        set_tag_template(tags)
-    else:
-        print("Tag to delete doesn't exist.")
+    if not tag_exist(tags, myDict):
+        return "Tag to delete doesn't exist."
+
+    tags.pop(tags.index(myDict))
+    keyboard.add_abbreviation(myDict['name'], myDict['name'])
+    print("Tag was deleted.")
+    set_tag_template(tags)
+
 
 def create_abbreviation_from_file(tags, vars):
+    
     for myDict in tags:
         status = 'to_create'
         for var in vars:
@@ -86,7 +88,7 @@ def main():
 
     create_tag(tags, asd)
 
-    #create_abbreviation_from_file(tags, vars)
+    create_abbreviation_from_file(tags, vars)
 
 
     while True:
