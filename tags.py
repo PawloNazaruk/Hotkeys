@@ -42,9 +42,11 @@ def update_tag(tags, myDict, newDict):
         return "Tag doesn't exist."
 
     tags.pop(tags.index(myDict))
+    print(f'myDict: {myDict}')
+    print(f'newDict: {newDict}')
     if tag_key_exist(tags, newDict):
         tags.append(myDict)
-        return "The name of the tag is already used."
+        return "The name is already used in another tag."
 
     tags.append(newDict)
     keyboard.add_abbreviation(myDict['name'], myDict['name'])

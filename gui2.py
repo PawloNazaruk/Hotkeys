@@ -1,7 +1,6 @@
 from tkinter import *
 from main import *
 import json
-import time
 
 class MyApp:
 
@@ -23,7 +22,9 @@ class MyApp:
             self.myContainer_tag.pack(fill=X)
 
             self.button_UpdateTag = Button(self.myContainer_tag, text="Update Tag", bg="yellow")
-            self.button_UpdateTag.bind("<Button-1>", lambda event: UpdateTagWindow(self.myParent, "Update Tag"))
+            self.button_UpdateTag.bind("<Button-1>", \
+                                       lambda event: \
+                                           UpdateTagWindow(self.getCurrentTagDict(event, tags), self.myParent, "Update Tag"))
             self.button_UpdateTag.pack(side=LEFT)
 
             self.button_DeleteTag = Button(self.myContainer_tag, text="Delete Tag", bg="red")
@@ -42,25 +43,66 @@ class MyApp:
             self.label_Switch_to.pack(side=LEFT)
 
         self.myScrollable_frame.pack(fill=X)
-    """
-    def buttonNewTagClick(self, event, master):
-        report_event(event)
-        self.myNewWindow = NewWindow(master)
-    """
-    def buttonUpdateTagClick(self):
+
+    def getCurrentTagDict(self, event, tags):
         try:
             self.idx = int(str(event.widget).replace(".!button", "")[46:]) -1
         except ValueError:
             self.idx = 1 - 1
         self.myDict = tags[self.idx]
-        #UpdateTagWindow(self.myParent, title="Update Tag Window")
-        report_event(event)
+        return self.myDict
 
 class UpdateTagWindow(Toplevel):
-    def __init__(self, master=None, title="Update Tag Window"):
+    def __init__(self, myDict, master=None, title="Update Tag Window"):
         super().__init__(master)
         self.title(title)
         self.geometry("700x500")
+        self.myDict = myDict
+
+        self.label_Name = Label(self, text="Name")
+        self.label_Name.pack()
+
+        self.entry_Name = Entry(self)
+        self.entry_Name.insert(0, self.myDict["name"])
+        self.entry_Name.pack()
+
+        self.label_Switch_to = Label(self, text="Switch_to")
+        self.label_Switch_to.pack()
+
+        self.text_Switch_to = Text(self)
+        self.text_Switch_to.insert("1.0", self.myDict["switch_to"])
+        self.text_Switch_to.pack(fill=X)
+
+        self.myContainer1 = Frame(self)
+        self.myContainer1.pack()
+
+        self.button_Create = Button(self.myContainer1, text="Update", bg="yellow")
+        self.button_Create.bind("<Button-1>", self.buttonUpdateClick)
+        self.button_Create.pack(side=LEFT)
+
+        self.button_Cancel = Button(self.myContainer1, text="Cancel", bg="red")
+        self.button_Cancel.bind("<Button-1>", self.buttonCloseClick)
+        self.button_Cancel.pack(side=RIGHT)
+
+    def buttonUpdateClick(self, event):
+        report_event(event)
+        self.newDict = dict(name="", switch_to="")
+        self.newDict["name"] = self.entry_Name.get()
+        self.newDict["switch_to"] = self.text_Switch_to.get("1.0", END)[:-1]
+
+        self.update_status = update_tag(tags, self.myDict, self.newDict)
+        if self.update_status == "Tag updated.":
+            self.myDict = self.newDict
+            AlertWindow(self, "Success", "Tag was updated.")
+            return
+
+        AlertWindow(self, "Error", self.update_status)
+        return
+
+    def buttonCloseClick(self, event):
+        report_event(event)
+        self.destroy()
+
 
 class NewTagWindow(Toplevel):
 
@@ -85,24 +127,21 @@ class NewTagWindow(Toplevel):
         self.myContainer1.pack()
 
         self.button_Create = Button(self.myContainer1, text="Create", bg="green")
-        self.button_Create.bind("<Button>", self.buttonCreateClick)
+        self.button_Create.bind("<Button-1>", self.buttonCreateClick)
         self.button_Create.pack(side=LEFT)
 
         self.button_Cancel = Button(self.myContainer1, text="Cancel", bg="red")
         self.button_Cancel.bind("<Button-1>", self.buttonCancelClick)
         self.button_Cancel.pack(side=RIGHT)
 
-
     def buttonCreateClick(self, event):
         report_event(event)
         self.myDict = dict(name="", switch_to="")
-
         self.myDict["name"] = self.entry_Name.get()
         self.myDict["switch_to"] = self.text_Switch_to.get("1.0", END)[:-1]
 
         self.state = create_tag(tags, self.myDict)
-        AlertWindow(self, title="Alert", text=self.state)
-
+        AlertWindow(self, title="Error", text=self.state)
 
     def buttonCancelClick(self, event):
         report_event(event)
@@ -114,7 +153,7 @@ class AlertWindow(Toplevel):
     def __init__(self, master=None, title="Alert", text="temp"):
         super().__init__(master=master)
         self.title(title)
-        self.geometry("200x200")
+        self.geometry("250x150")
 
         self.label_Alert = Label(self, text=text)
         self.label_Alert.pack()

@@ -9,16 +9,8 @@
             "switch_to": "\"\"\""
         },
         {
-            "name": "@{code:j",
-            "switch_to": "{code:java}\n\n{code}"
-        },
-        {
             "name": "@Mesh:",
             "switch_to": "*Mesh:*{code:java}\n\n{code}"
-        },
-        {
-            "name": "@Coordinates:",
-            "switch_to": "*Coordinates:*{code:java}\n\n{code}"
         },
         {
             "name": "@#LaunchMain",
@@ -29,84 +21,20 @@
             "switch_to": "# Launch cyberpunk2077 - R6.Ratings from Final Deliverable."
         },
         {
-            "name": "@Amateusz",
-            "switch_to": "Att"
-        },
-        {
-            "name": "@Benon",
-            "switch_to": "Beniz"
+            "name": "@Coordinates:",
+            "switch_to": "*Coordinates:*{code:java}\n\n{code}234234"
         },
         {
             "name": "123",
             "switch_to": "234"
         },
         {
-            "name": "asdq",
-            "switch_to": "asdq"
-        },
-        {
-            "name": "qwea",
-            "switch_to": "qwea"
-        },
-        {
-            "name": "@Benonm",
+            "name": "@Benon",
             "switch_to": "Beniz"
         },
         {
-            "name": "@Benonmmm",
-            "switch_to": "Beniz"
-        },
-        {
-            "name": "776767",
-            "switch_to": "6776767"
-        },
-        {
-            "name": "999",
-            "switch_to": "999"
-        },
-        {
-            "name": "45454",
-            "switch_to": "45454"
-        },
-        {
-            "name": "323232",
-            "switch_to": "3323232"
-        },
-        {
-            "name": "98989",
-            "switch_to": "898989"
-        },
-        {
-            "name": "676767675",
-            "switch_to": "67456"
-        },
-        {
-            "name": "456",
-            "switch_to": "456"
-        },
-        {
-            "name": "754",
-            "switch_to": "754"
-        },
-        {
-            "name": "889",
-            "switch_to": "889"
-        },
-        {
-            "name": "123321",
-            "switch_to": "123321"
-        },
-        {
-            "name": "666",
-            "switch_to": "666"
-        },
-        {
-            "name": "777",
-            "switch_to": "777"
-        },
-        {
-            "name": "rty",
-            "switch_to": "rty"
+            "name": "@Benon123456456",
+            "switch_to": "0000Beniz"
         }
     ]
 }
