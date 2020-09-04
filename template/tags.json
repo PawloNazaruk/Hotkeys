@@ -103,6 +103,10 @@
         {
             "name": "777",
             "switch_to": "777"
+        },
+        {
+            "name": "rty",
+            "switch_to": "rty"
         }
     ]
 }

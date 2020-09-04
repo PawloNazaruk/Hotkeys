@@ -12,7 +12,7 @@ class MyApp:
         self.myContainer1.pack(fill=X)
 
         self.button_NewTag = Button(self.myContainer1, text="New Tag", bg="green")
-        self.button_NewTag.bind("<Button-1>", lambda e: NewTagWindow(tags, self.myParent, "New Tag"))
+        self.button_NewTag.bind("<Button-1>", lambda event: NewTagWindow(self.myParent, "New Tag"))
         self.button_NewTag.pack(side=TOP, fill=X)
 
         self.myScrollable_frame = ScrollableFrame(self.myContainer1)
@@ -23,6 +23,7 @@ class MyApp:
             self.myContainer_tag.pack(fill=X)
 
             self.button_UpdateTag = Button(self.myContainer_tag, text="Update Tag", bg="yellow")
+            self.button_UpdateTag.bind("<Button-1>", lambda event: UpdateTagWindow(self.myParent, "Update Tag"))
             self.button_UpdateTag.pack(side=LEFT)
 
             self.button_DeleteTag = Button(self.myContainer_tag, text="Delete Tag", bg="red")
@@ -41,25 +42,29 @@ class MyApp:
             self.label_Switch_to.pack(side=LEFT)
 
         self.myScrollable_frame.pack(fill=X)
-
-    def buttonNewTagClick(self, e, master):
+    """
+    def buttonNewTagClick(self, event, master):
+        report_event(event)
+        self.myNewWindow = NewWindow(master)
+    """
+    def buttonUpdateTagClick(self):
+        try:
+            self.idx = int(str(event.widget).replace(".!button", "")[46:]) -1
+        except ValueError:
+            self.idx = 1 - 1
+        self.myDict = tags[self.idx]
+        #UpdateTagWindow(self.myParent, title="Update Tag Window")
         report_event(event)
 
-        self.myNewWindow = NewWindow(master)
-
-
-        self.myContainerTemp.pack()
-        """
-        self.myButtonCreate = Button(self.myContainerTemp, text="Create")
-        self.myButtonCreate.pack()
-
-        self.myButtonCancel = Button(self.myContainerTemp, text="Cancel")
-        self.myButtonCancel.pack()"""
-
+class UpdateTagWindow(Toplevel):
+    def __init__(self, master=None, title="Update Tag Window"):
+        super().__init__(master)
+        self.title(title)
+        self.geometry("700x500")
 
 class NewTagWindow(Toplevel):
 
-    def __init__(self, master=None, title="New Window"):
+    def __init__(self, master=None, title="New Tag Window"):
         super().__init__(master=master)
         self.title(title)
         self.geometry("700x500")
@@ -145,9 +150,6 @@ def report_event(event):
     print(f'Time: {event.time}')
     print(f'EventType={event.type}, {event_name[event.type]},\n \
         EventWidgetId={event.widget}, EventKeySymbol={event.keysym} \n')
-
-
-
 
 
 def get_tag_template(path = "template\\tags.json"):
