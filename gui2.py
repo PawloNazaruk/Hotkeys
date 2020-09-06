@@ -23,11 +23,11 @@ class MyApp:
 
             self.button_UpdateTag = Button(self.myContainer_tag, text="Update Tag", bg="yellow")
             self.button_UpdateTag.bind("<Button-1>", \
-                                       lambda event: \
-                                           UpdateTagWindow(self.getCurrentTagDict(event, tags), self.myParent, "Update Tag"))
+                                       lambda event: UpdateTagWindow(self.getCurrentTagDict(event, tags), self.myParent, "Update Tag"))
             self.button_UpdateTag.pack(side=LEFT)
 
             self.button_DeleteTag = Button(self.myContainer_tag, text="Delete Tag", bg="red")
+            self.button_DeleteTag.bind("<Button-1>", lambda event: self.buttonDeleteClick(event, tags))
             self.button_DeleteTag.pack(side=LEFT)
 
             self.label_Name = Label(self.myContainer_tag, text="Name: ", bg="cyan")
@@ -44,13 +44,22 @@ class MyApp:
 
         self.myScrollable_frame.pack(fill=X)
 
+
+
     def getCurrentTagDict(self, event, tags):
+        print(event)
+        print(tags)
         try:
             self.idx = int(str(event.widget).replace(".!button", "")[46:]) -1
         except ValueError:
             self.idx = 1 - 1
         self.myDict = tags[self.idx]
         return self.myDict
+
+    def buttonDeleteClick(self, event, tags):
+        report_event(event)
+
+        print(tags)
 
 class UpdateTagWindow(Toplevel):
     def __init__(self, myDict, master=None, title="Update Tag Window"):
