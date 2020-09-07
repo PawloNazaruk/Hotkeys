@@ -8,6 +8,8 @@ class MyApp:
         self.myParent = parent
         self.tags = tags
 
+        print("asd")
+
         self.button_NewTag = Button(self.myParent, text="New Tag", bg="green")
         self.button_NewTag.bind("<Button-1>", lambda event: NewTagWindow(self.myParent, "New Tag"))
         self.button_NewTag.pack(side=TOP, fill=X)
