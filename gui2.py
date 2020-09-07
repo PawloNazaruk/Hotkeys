@@ -1,6 +1,7 @@
 from tkinter import *
 from main import *
 import json
+from pprint import pprint
 
 class MyApp:
 
@@ -26,9 +27,13 @@ class MyApp:
                                        lambda event: UpdateTagWindow(self.getCurrentTagDict(event, tags), self.myParent, "Update Tag"))
             self.button_UpdateTag.pack(side=LEFT)
 
+
+
             self.button_DeleteTag = Button(self.myContainer_tag, text="Delete Tag", bg="red")
-            self.button_DeleteTag.bind("<Button-1>", lambda event: self.buttonDeleteClick(event, tags))
+            self.button_DeleteTag.bind("<Button-1>", lambda event: self.buttonDeleteClick(event, tags, self.getCurrentTagDict(event, tags, "2")))
+
             self.button_DeleteTag.pack(side=LEFT)
+
 
             self.label_Name = Label(self.myContainer_tag, text="Name: ", bg="cyan")
             self.label_Name.pack(side=LEFT)
@@ -46,20 +51,20 @@ class MyApp:
 
 
 
-    def getCurrentTagDict(self, event, tags):
-        print(event)
-        print(tags)
+    def getCurrentTagDict(self, event, tags, button_idx = ""):
         try:
-            self.idx = int(str(event.widget).replace(".!button", "")[46:]) -1
+            self.idx = int(str(event.widget).replace(".!button" + button_idx, "")[46:]) - 1
         except ValueError:
             self.idx = 1 - 1
         self.myDict = tags[self.idx]
         return self.myDict
 
-    def buttonDeleteClick(self, event, tags):
+    def buttonDeleteClick(self, event, tags, myDict):
         report_event(event)
+        delete_tag(tags, myDict)
+        AlertWindow(self.myParent, "Success", "Tag was deleted.")
 
-        print(tags)
+
 
 class UpdateTagWindow(Toplevel):
     def __init__(self, myDict, master=None, title="Update Tag Window"):
@@ -208,9 +213,6 @@ def get_tag_template(path = "template\\tags.json"):
 
 
 tags = get_tag_template()['tags']
-
-asd = dict(name="123", switch_to="234")
-create_tag(tags, asd)
 
 root = Tk()
 root.geometry("800x300")

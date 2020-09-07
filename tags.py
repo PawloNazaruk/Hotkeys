@@ -1,6 +1,6 @@
 import json
 import keyboard
-
+from pprint import pprint
 
 def get_tag_template(path = "template\\tags.json"):
     with open(path, "r") as file_ref:
@@ -59,7 +59,9 @@ def delete_tag(tags, myDict):
     if not tag_exist(tags, myDict):
         return "Tag to delete doesn't exist."
 
+    pprint(f"delete_tag: {tags}")
     tags.pop(tags.index(myDict))
+    pprint(f"delete_tag after: {tags}")
     keyboard.add_abbreviation(myDict['name'], myDict['name'])
     print("Tag was deleted.")
     set_tag_template(tags)
