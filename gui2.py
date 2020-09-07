@@ -1,53 +1,57 @@
 from tkinter import *
 from main import *
 import json
-from pprint import pprint
 
 class MyApp:
 
     def __init__(self, parent, tags):
         self.myParent = parent
+        self.tags = tags
+
+        self.button_NewTag = Button(self.myParent, text="New Tag", bg="green")
+        self.button_NewTag.bind("<Button-1>", lambda event: NewTagWindow(self.myParent, "New Tag"))
+        self.button_NewTag.pack(side=TOP, fill=X)
 
         self.myContainer1 = Frame(self.myParent, height=20, borderwidth=5, bg="black")
         self.myContainer1.pack(fill=X)
 
-        self.button_NewTag = Button(self.myContainer1, text="New Tag", bg="green")
-        self.button_NewTag.bind("<Button-1>", lambda event: NewTagWindow(self.myParent, "New Tag"))
-        self.button_NewTag.pack(side=TOP, fill=X)
+        self.showContent(tags)
 
-        self.myScrollable_frame = ScrollableFrame(self.myContainer1)
+    def showContent(self, tags):
+        try:
+            self.myScrollable_frame.destroy()
+        except AttributeError:
+            pass
+        finally:
+            self.myScrollable_frame = ScrollableFrame(self.myContainer1)
 
-        for tag in tags:
-            print(tag['name'])
-            self.myContainer_tag = Frame(self.myScrollable_frame.scrollable_frame)
-            self.myContainer_tag.pack(fill=X)
+            for tag in tags:
+                print(tag['name'])
+                self.myContainer_tag = Frame(self.myScrollable_frame.scrollable_frame)
+                self.myContainer_tag.pack(fill=X)
 
-            self.button_UpdateTag = Button(self.myContainer_tag, text="Update Tag", bg="yellow")
-            self.button_UpdateTag.bind("<Button-1>", \
-                                       lambda event: UpdateTagWindow(self.getCurrentTagDict(event, tags), self.myParent, "Update Tag"))
-            self.button_UpdateTag.pack(side=LEFT)
+                self.button_UpdateTag = Button(self.myContainer_tag, text="Update Tag", bg="yellow")
+                self.button_UpdateTag.bind("<Button-1>", \
+                                           lambda event: UpdateTagWindow(self.getCurrentTagDict(event, tags), self.myParent, "Update Tag"))
+                self.button_UpdateTag.pack(side=LEFT)
 
+                self.button_DeleteTag = Button(self.myContainer_tag, text="Delete Tag", bg="red")
+                self.button_DeleteTag.bind("<Button-1>", lambda event: self.buttonDeleteClick(event, tags, self.getCurrentTagDict(event, tags, "2")))
+                self.button_DeleteTag.pack(side=LEFT)
 
+                self.label_Name = Label(self.myContainer_tag, text="Name: ", bg="cyan")
+                self.label_Name.pack(side=LEFT)
 
-            self.button_DeleteTag = Button(self.myContainer_tag, text="Delete Tag", bg="red")
-            self.button_DeleteTag.bind("<Button-1>", lambda event: self.buttonDeleteClick(event, tags, self.getCurrentTagDict(event, tags, "2")))
+                self.label_Name = Label(self.myContainer_tag, text=tag['name'], bg="white", width=18, anchor=W)
+                self.label_Name.pack(side=LEFT)
 
-            self.button_DeleteTag.pack(side=LEFT)
+                self.label_Switch_to = Label(self.myContainer_tag, text="Switch_to", bg="cyan")
+                self.label_Switch_to.pack(side=LEFT)
 
+                self.label_Switch_to = Label(self.myContainer_tag, text=tag['switch_to'], bg="white")
+                self.label_Switch_to.pack(side=LEFT)
 
-            self.label_Name = Label(self.myContainer_tag, text="Name: ", bg="cyan")
-            self.label_Name.pack(side=LEFT)
-
-            self.label_Name = Label(self.myContainer_tag, text=tag['name'], bg="white", width=18, anchor=W)
-            self.label_Name.pack(side=LEFT)
-
-            self.label_Switch_to = Label(self.myContainer_tag, text="Switch_to", bg="cyan")
-            self.label_Switch_to.pack(side=LEFT)
-
-            self.label_Switch_to = Label(self.myContainer_tag, text=tag['switch_to'], bg="white")
-            self.label_Switch_to.pack(side=LEFT)
-
-        self.myScrollable_frame.pack(fill=X)
+            self.myScrollable_frame.pack(fill=X)
 
 
 
@@ -63,6 +67,7 @@ class MyApp:
         report_event(event)
         delete_tag(tags, myDict)
         AlertWindow(self.myParent, "Success", "Tag was deleted.")
+        self.showContent(tags)
 
 
 
@@ -218,4 +223,5 @@ root = Tk()
 root.geometry("800x300")
 root.title("Hotkeys")
 myapp = MyApp(root, tags)
+
 root.mainloop()
