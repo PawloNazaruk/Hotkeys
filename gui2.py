@@ -21,7 +21,7 @@ class MyApp:
             self.frm_tags_content = Frame(self.root, height=20, borderwidth=5, bg="black")
             self.frm_tags_content.pack(fill=X)
             self.btn_new_tag = Button(self.frm_tags_content, text="New Tag", bg="green")
-            self.btn_new_tag.bind("<Button-1>", lambda event: NewTagWindow(self.root, "New Tag"))
+            self.btn_new_tag.bind("<Button-1>", self.btn_new_tag_click)
             self.btn_new_tag.pack(side=TOP, fill=X)
             self.frm_content_scroll = ScrollableFrame(self.frm_tags_content)
 
@@ -30,14 +30,11 @@ class MyApp:
                 self.frm_tag.pack(fill=X)
 
                 self.btn_update_tag = Button(self.frm_tag, text="Update Tag", bg="yellow")
-                self.btn_update_tag.bind("<Button-1>", lambda event:
-                                            self.display_screen_update_tag(event))
-                                            #UpdateTagWindow(self.get_current_tag(event, ""), self.root, "Update Tag"))
+                self.btn_update_tag.bind("<Button-1>", self.btn_update_tag_click)
                 self.btn_update_tag.pack(side=LEFT)
 
                 self.btn_delete_tag = Button(self.frm_tag, text="Delete Tag", bg="red")
-                self.btn_delete_tag.bind("<Button-1>", lambda event:
-                                            self.btn_delete_tag_click(event))
+                self.btn_delete_tag.bind("<Button-1>", self.btn_delete_tag_click)
                 self.btn_delete_tag.pack(side=LEFT)
 
                 self.lbl_name = Label(self.frm_tag, text="Name: ", bg="cyan")
@@ -54,9 +51,9 @@ class MyApp:
 
     def get_current_tag(self, event):
         report_event(event)
-        current_tag_regex = re.compile("(frame(\d*)\.!button)")
-        mo_1 = current_tag_regex.findall(str(event.widget))
-        tag_idx = mo_1[0][1]
+        current_tag_regex = re.compile("frame(\d*)\.!button")
+        matched_object = current_tag_regex.findall(str(event.widget))
+        tag_idx = matched_object[0]
         if tag_idx is "":
             tag_idx = 0
         else:
@@ -69,6 +66,9 @@ class MyApp:
         delete_tag(tags, tag)
         AlertWindow(self.root, "Success", "Tag was deleted.")
         self.display_screen_content()
+
+    def btn_update_tag_click(self, event):
+        self.display_screen_update_tag(event)
 
     def display_screen_update_tag(self, event):
         try:
@@ -125,54 +125,52 @@ class MyApp:
         self.frm_tags_content.destroy()
         self.display_screen_content()
 
+    def btn_new_tag_click(self, event):
+        self.display_screen_new_tag(event)
 
+    def display_screen_new_tag(self, event):
+        try:
+            self.frm_tags_content.destroy()
+        except AttributeError:
+            pass
+        finally:
+            self.frm_tags_content = Frame(self.root)
+            self.frm_tags_content.pack(fill=X)
 
+            self.lbl_name = Label(self.frm_tags_content, text="Name")
+            self.lbl_name.pack()
+            self.ent_name = Entry(self.frm_tags_content)
+            self.ent_name.pack()
 
+            self.lbl_switch_to = Label(self.frm_tags_content, text="Switch_to")
+            self.lbl_switch_to.pack()
+            self.txt_switch_to = Text(self.frm_tags_content)
+            self.txt_switch_to.pack(fill=X)
 
+            self.frm_buttons_line = Frame(self.frm_tags_content)
+            self.frm_buttons_line.pack()
 
+            self.btn_create = Button(self.frm_buttons_line, text="Create", bg="green")
+            self.btn_create.bind("<Button-1>", self.btn_create_click)
+            self.btn_create.pack(side=LEFT)
 
-class NewTagWindow(Toplevel):
+            self.btn_cancel = Button(self.frm_buttons_line, text="Cancel", bg="red")
+            self.btn_cancel.bind("<Button-1>", self.btn_close_click)
+            self.btn_cancel.pack(side=RIGHT)
 
-    def __init__(self, master=None, title="New Tag Window"):
-        super().__init__(master=master)
-        self.title(title)
-        self.geometry("700x500")
+    def btn_create_click(self, event):
+            report_event(event)
+            tag = dict(name="", switch_to="")
+            tag["name"] = self.ent_name.get()
+            tag["switch_to"] = self.txt_switch_to.get("1.0", END)[:-1]
 
-        self.label_Name = Label(self, text="Name")
-        self.label_Name.pack()
+            self.state = create_tag(self.tags, tag)
+            if self.state == "Tag created.":
+                AlertWindow(self.root, title="Success", text=self.state)
+                self.frm_tags_content.destroy()
+                return self.display_screen_content()
 
-        self.entry_Name = Entry(self)
-        self.entry_Name.pack()
-
-        self.label_Switch_to = Label(self, text="Switch_to")
-        self.label_Switch_to.pack()
-
-        self.text_Switch_to = Text(self)
-        self.text_Switch_to.pack(fill=X)
-
-        self.frm_container_01 = Frame(self)
-        self.frm_container_01.pack()
-
-        self.button_Create = Button(self.frm_container_01, text="Create", bg="green")
-        self.button_Create.bind("<Button-1>", self.buttonCreateClick)
-        self.button_Create.pack(side=LEFT)
-
-        self.button_Cancel = Button(self.frm_container_01, text="Cancel", bg="red")
-        self.button_Cancel.bind("<Button-1>", self.buttonCancelClick)
-        self.button_Cancel.pack(side=RIGHT)
-
-    def buttonCreateClick(self, event):
-        report_event(event)
-        self.myDict = dict(name="", switch_to="")
-        self.myDict["name"] = self.entry_Name.get()
-        self.myDict["switch_to"] = self.text_Switch_to.get("1.0", END)[:-1]
-
-        self.state = create_tag(tags, self.myDict)
-        AlertWindow(self, title="Error", text=self.state)
-
-    def buttonCancelClick(self, event):
-        report_event(event)
-        self.destroy()
+            AlertWindow(self.root, title="Error", text=self.state)
 
 
 class AlertWindow(Toplevel):

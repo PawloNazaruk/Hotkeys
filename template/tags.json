@@ -1,8 +1,56 @@
 {
     "tags": [
         {
+            "name": "@build",
+            "switch_to": "[currentBuild]"
+        },
+        {
+            "name": "@\"'",
+            "switch_to": "\"\"\""
+        },
+        {
+            "name": "@Mesh:",
+            "switch_to": "*Mesh:*{code:java}\n\n{code}"
+        },
+        {
+            "name": "@#LaunchRatings",
+            "switch_to": "# Launch cyberpunk2077 - R6.Ratings from Final Deliverable."
+        },
+        {
+            "name": "@Coordinates:",
+            "switch_to": "*Coordinates:*{code:java}\n\n{code}234234"
+        },
+        {
+            "name": "@Benon123456456",
+            "switch_to": "0000Beniz"
+        },
+        {
             "name": "@Benon666",
-            "switch_to": "Benizasdasd"
+            "switch_to": "Beniz666"
+        },
+        {
+            "name": "@#LaunchMain6786767867886",
+            "switch_to": "# Launch cyberpunk2077 - R6.Main from Final Deliverable.678678678678678"
+        },
+        {
+            "name": "123",
+            "switch_to": "234aaaaaaaaaaaaa"
+        },
+        {
+            "name": "@SUPPA BENON",
+            "switch_to": "SMALLu PP"
+        },
+        {
+            "name": "adadasd",
+            "switch_to": "asdasd"
+        },
+        {
+            "name": "@Benon",
+            "switch_to": "asd"
+        },
+        {
+            "name": "@Benonqwe",
+            "switch_to": "qwe12"
         }
     ]
 }
