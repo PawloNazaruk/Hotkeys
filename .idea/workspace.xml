@@ -4,6 +4,7 @@
     <list default="true" id="62fb2646-c8ba-48fb-b431-9bb80e9db3df" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui2.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/tags.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/template/tags.json" beforeDir="false" afterPath="$PROJECT_DIR$/template/tags.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -147,8 +148,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.gui2 (1)" />
-        <item itemvalue="Python.gui" />
         <item itemvalue="Python.tags" />
+        <item itemvalue="Python.gui" />
         <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.scrollbar" />
       </list>
@@ -172,30 +173,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1172" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598999714046" />
-    <state width="1131" height="199" key="GridCell.Tab.0.bottom" timestamp="1599517501621">
+    <state width="1131" height="199" key="GridCell.Tab.0.bottom" timestamp="1599594079068">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1131" height="199" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599517501621" />
-    <state width="1131" height="199" key="GridCell.Tab.0.center" timestamp="1599517501621">
+    <state width="1131" height="199" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599594079068" />
+    <state width="1131" height="199" key="GridCell.Tab.0.center" timestamp="1599594079068">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1131" height="199" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599517501621" />
-    <state width="1131" height="199" key="GridCell.Tab.0.left" timestamp="1599517501621">
+    <state width="1131" height="199" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599594079068" />
+    <state width="1131" height="199" key="GridCell.Tab.0.left" timestamp="1599594079068">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1131" height="199" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599517501621" />
-    <state width="1131" height="199" key="GridCell.Tab.0.right" timestamp="1599517501621">
+    <state width="1131" height="199" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599594079068" />
+    <state width="1131" height="199" key="GridCell.Tab.0.right" timestamp="1599594079068">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1131" height="199" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599517501621" />
+    <state width="1131" height="199" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599594079068" />
     <state x="461" y="151" key="SettingsEditor" timestamp="1598898795079">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="151" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1598898795079" />
-    <state x="639" y="326" key="com.intellij.ide.util.TipDialog" timestamp="1599501821200">
+    <state x="639" y="326" key="com.intellij.ide.util.TipDialog" timestamp="1599589284289">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="639" y="326" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599501821200" />
+    <state x="639" y="326" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599589284289" />
     <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1598557238334">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -2,28 +2,27 @@ from tkinter import *
 from main import *
 import json
 
-# TODO: sortowanie przy zapisie/wczytaniu pliku
+# TODO: sortowanie przy zapisie/wczytaniu pliku. zaczytywanie listy pliku temp
 
 class MyApp:
     def __init__(self, root, tags):
         self.root = root
         self.tags = tags
 
-        self.btn_new_tag = Button(self.root, text="New Tag", bg="green")
-        self.btn_new_tag.bind("<Button-1>", lambda event: NewTagWindow(self.root, "New Tag"))
-        self.btn_new_tag.pack(side=TOP, fill=X)
-        self.frm_content = Frame(self.root, height=20, borderwidth=5, bg="black")
-        self.frm_content.pack(fill=X)
+        self.display_screen_content()
 
-        self.show_content()
-
-    def show_content(self):
+    def display_screen_content(self):
         try:
-            self.frm_content_scroll.destroy()
+            self.frm_tags_content.destroy()
         except AttributeError:
             pass
         finally:
-            self.frm_content_scroll = ScrollableFrame(self.frm_content)
+            self.frm_tags_content = Frame(self.root, height=20, borderwidth=5, bg="black")
+            self.frm_tags_content.pack(fill=X)
+            self.btn_new_tag = Button(self.frm_tags_content, text="New Tag", bg="green")
+            self.btn_new_tag.bind("<Button-1>", lambda event: NewTagWindow(self.root, "New Tag"))
+            self.btn_new_tag.pack(side=TOP, fill=X)
+            self.frm_content_scroll = ScrollableFrame(self.frm_tags_content)
 
             for tag in self.tags:
                 self.frm_tag = Frame(self.frm_content_scroll.scrollable_frame)
@@ -31,12 +30,13 @@ class MyApp:
 
                 self.btn_update_tag = Button(self.frm_tag, text="Update Tag", bg="yellow")
                 self.btn_update_tag.bind("<Button-1>", lambda event:
-                                            UpdateTagWindow(self.get_current_tag(event, ""), self.root, "Update Tag"))
+                                            self.display_screen_update_tag(event))
+                                            #UpdateTagWindow(self.get_current_tag(event, ""), self.root, "Update Tag"))
                 self.btn_update_tag.pack(side=LEFT)
 
                 self.btn_delete_tag = Button(self.frm_tag, text="Delete Tag", bg="red")
                 self.btn_delete_tag.bind("<Button-1>", lambda event:
-                                            self.btn_delete_tag_click(event, self.get_current_tag(event, "2")))
+                                            self.btn_delete_tag_click(event))
                 self.btn_delete_tag.pack(side=LEFT)
 
                 self.lbl_name = Label(self.frm_tag, text="Name: ", bg="cyan")
@@ -54,72 +54,72 @@ class MyApp:
     def get_current_tag(self, event, button_idx = ""):
         # TODO MAKE SIMPLER / regex??
         try:
-            self.tag_idx = int(str(event.widget).replace(".!button" + button_idx, "")[46:]) - 1
+            tag_idx = int(str(event.widget).replace(".!button" + button_idx, "")[46:]) - 1
         except ValueError:
-            self.tag_idx = 0
-        return self.tags[self.tag_idx]
+            tag_idx = 0
+        return self.tags[tag_idx]
 
-    def btn_delete_tag_click(self, event, myDict):
+    def btn_delete_tag_click(self, event):
         report_event(event)
-        delete_tag(self.tags, myDict)
+        tag = self.get_current_tag(event, "2")
+        delete_tag(tags, tag)
         AlertWindow(self.root, "Success", "Tag was deleted.")
-        self.show_content()
+        self.display_screen_content()
 
-# //////////////////////////////////////////////////////////
+    def display_screen_update_tag(self, event):
+        try:
+            self.frm_tags_content.destroy()
+        except AttributeError:
+            pass
+        finally:
+            self.tag = self.get_current_tag(event, "")
 
-class UpdateTagWindow(Toplevel):
-    def __init__(self, myDict, master=None, title="Update Tag Window"):
-        super().__init__(master)
-        self.title(title)
-        self.geometry("700x500")
-        self.myDict = myDict
+            self.frm_tags_content = Frame(self.root)
+            self.frm_tags_content.pack(fill=X)
 
-        self.label_Name = Label(self, text="Name")
-        self.label_Name.pack()
+            self.lbl_name = Label(self.frm_tags_content, text="Name")
+            self.lbl_name.pack()
+            self.ent_name = Entry(self.frm_tags_content)
+            self.ent_name.insert(0, self.tag["name"])
+            self.ent_name.pack()
 
-        self.entry_Name = Entry(self)
-        self.entry_Name.insert(0, self.myDict["name"])
-        self.entry_Name.pack()
+            self.lbl_switch_to = Label(self.frm_tags_content, text="Switch_to")
+            self.lbl_switch_to.pack()
+            self.txt_switch_to = Text(self.frm_tags_content)
+            self.txt_switch_to.insert("1.0", self.tag["switch_to"])
+            self.txt_switch_to.pack(fill=X)
 
-        self.label_Switch_to = Label(self, text="Switch_to")
-        self.label_Switch_to.pack()
+            self.frm_buttons_line = Frame(self.frm_tags_content)
+            self.frm_buttons_line.pack()
 
-        self.text_Switch_to = Text(self)
-        self.text_Switch_to.insert("1.0", self.myDict["switch_to"])
-        self.text_Switch_to.pack(fill=X)
+            self.btn_update = Button(self.frm_buttons_line, text="Update", bg="yellow")
+            self.btn_update.bind("<Button-1>", self.btn_update_click)
+            self.btn_update.pack(side=LEFT)
 
-        self.frm_container_01 = Frame(self)
-        self.frm_container_01.pack()
+            self.btn_cancel = Button(self.frm_buttons_line, text="Cancel", bg="red")
+            self.btn_cancel.bind("<Button-1>", self.btn_close_click)
+            self.btn_cancel.pack(side=RIGHT)
 
-        self.button_Create = Button(self.frm_container_01, text="Update", bg="yellow")
-        self.button_Create.bind("<Button-1>", self.buttonUpdateClick)
-        self.button_Create.pack(side=LEFT)
-
-        self.button_Cancel = Button(self.frm_container_01, text="Cancel", bg="red")
-        self.button_Cancel.bind("<Button-1>", self.buttonCloseClick)
-        self.button_Cancel.pack(side=RIGHT)
-
-    def buttonUpdateClick(self, event):
+    def btn_update_click(self, event):
         report_event(event)
-        self.newDict = dict(name="", switch_to="")
-        self.newDict["name"] = self.entry_Name.get()
-        self.newDict["switch_to"] = self.text_Switch_to.get("1.0", END)[:-1]
+        self.new_tag = {}
+        self.new_tag["name"] = self.ent_name.get()
+        self.new_tag["switch_to"] = self.txt_switch_to.get("1.0", END)[:-1]
 
-        self.update_status = update_tag(tags, self.myDict, self.newDict)
-        if self.update_status == "Tag updated.":
-            self.myDict = self.newDict
-            AlertWindow(self, "Success", "Tag was updated.")
-            self.destroy()
-            return MyApp.show_content(myapp)
+        update_status = update_tag(tags, self.tag, self.new_tag)
+        if update_status == "Tag updated.":
+            self.tag = self.new_tag
+            AlertWindow(self.frm_tags_content, "Success", "Tag was updated.")
+            self.frm_tags_content.destroy()
+            return self.display_screen_content()
 
-        AlertWindow(self, "Error", self.update_status)
+        AlertWindow(self.frm_tags_content, "Error", update_status)
         return
 
-    def buttonCloseClick(self, event):
+    def btn_close_click(self, event):
         report_event(event)
-        self.destroy()
-        MyApp.show_content()
-
+        self.frm_tags_content.destroy()
+        self.display_screen_content()
 
 class NewTagWindow(Toplevel):
 
@@ -172,9 +172,8 @@ class AlertWindow(Toplevel):
         self.title(title)
         self.geometry("250x150")
 
-        self.label_Alert = Label(self, text=text)
-        self.label_Alert.pack()
-
+        self.lbl_alert = Label(self, text=text)
+        self.lbl_alert.pack()
 
 
 class ScrollableFrame(Frame):
@@ -208,14 +207,14 @@ def report_event(event):
         EventWidgetId={event.widget}, EventKeySymbol={event.keysym} \n')
 
 
-def get_tag_template(path = "template\\tags.json"):
+def get_template(path = "template\\tags.json"):
     with open(path, "r") as file_ref:
         raw_data = json.load(file_ref)
         return raw_data
 
 
 
-tags = get_tag_template()['tags']
+tags = get_template()['tags']
 
 root = Tk()
 root.geometry("800x300")

@@ -1,20 +1,24 @@
 {
     "tags": [
         {
-            "name": "123",
-            "switch_to": "234"
-        },
-        {
-            "name": "@Mesh:",
-            "switch_to": "*Mesh:*{code:java}\n\n{code}"
+            "name": "@Coordinates:",
+            "switch_to": "*Coordinates:*{code:java}\n\n{code}234234"
         },
         {
             "name": "@Benon",
-            "switch_to": "Beniz666777666"
+            "switch_to": "Beniz"
         },
         {
-            "name": "@#LaunchMain",
-            "switch_to": "# Launch cyberpunk2077 - R6.Main from Final Deliverable.6656"
+            "name": "@Benon123456456",
+            "switch_to": "0000Beniz"
+        },
+        {
+            "name": "@\"'",
+            "switch_to": "\"\"\""
+        },
+        {
+            "name": "123",
+            "switch_to": "234"
         }
     ]
 }

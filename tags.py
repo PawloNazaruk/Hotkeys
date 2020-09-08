@@ -10,7 +10,7 @@ def get_tag_template(path = "template\\tags.json"):
 def set_tag_template(tags, path = "template\\tags.json"):
     with open(path, "r+") as file_ref:
         file_ref.seek(0)
-        json.dump(dict(tags=tags), file_ref, indent=4, sort_keys=True)
+        json.dump(dict(tags=tags), file_ref, indent=4)
         file_ref.truncate()
 
 def tag_exist(tags, myDict):
