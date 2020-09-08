@@ -1,6 +1,7 @@
 from tkinter import *
 from main import *
 import json
+import re
 
 # TODO: sortowanie przy zapisie/wczytaniu pliku. zaczytywanie listy pliku temp
 
@@ -51,17 +52,20 @@ class MyApp:
 
             self.frm_content_scroll.pack(fill=X)
 
-    def get_current_tag(self, event, button_idx = ""):
-        # TODO MAKE SIMPLER / regex??
-        try:
-            tag_idx = int(str(event.widget).replace(".!button" + button_idx, "")[46:]) - 1
-        except ValueError:
+    def get_current_tag(self, event):
+        report_event(event)
+        current_tag_regex = re.compile("(frame(\d*)\.!button)")
+        mo_1 = current_tag_regex.findall(str(event.widget))
+        tag_idx = mo_1[0][1]
+        if tag_idx is "":
             tag_idx = 0
+        else:
+            tag_idx = int(tag_idx) - 1
         return self.tags[tag_idx]
 
     def btn_delete_tag_click(self, event):
         report_event(event)
-        tag = self.get_current_tag(event, "2")
+        tag = self.get_current_tag(event)
         delete_tag(tags, tag)
         AlertWindow(self.root, "Success", "Tag was deleted.")
         self.display_screen_content()
@@ -72,7 +76,7 @@ class MyApp:
         except AttributeError:
             pass
         finally:
-            self.tag = self.get_current_tag(event, "")
+            self.tag = self.get_current_tag(event)
 
             self.frm_tags_content = Frame(self.root)
             self.frm_tags_content.pack(fill=X)
@@ -120,6 +124,12 @@ class MyApp:
         report_event(event)
         self.frm_tags_content.destroy()
         self.display_screen_content()
+
+
+
+
+
+
 
 class NewTagWindow(Toplevel):
 
