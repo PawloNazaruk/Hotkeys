@@ -1,20 +1,19 @@
 from tags import *
-
+from view import *
 
 
 def main():
     tags = get_tag_template("template\\tags.json")['tags']
     vars = get_tag_template("template\\vars.json")['vars']
 
-    asd = dict(name="@Benon", switch_to="")
-    create_tag(tags, asd)
-    print(create_tag(tags, asd))
     create_abbreviation_from_file(tags, vars)
 
-    while True:
-        continue
+    root = Tk()
+    root.geometry("800x600")
+    root.title("Hotkeys")
+    myapp = MyApp(root, tags)
 
-
+    root.mainloop()
 
 
 if __name__ == "__main__":

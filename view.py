@@ -3,7 +3,6 @@ from main import *
 import json
 import re
 
-# TODO: sortowanie przy zapisie/wczytaniu pliku. zaczytywanie listy pliku temp
 
 class MyApp:
     def __init__(self, root, tags):
@@ -11,6 +10,9 @@ class MyApp:
         self.tags = tags
 
         self.display_screen_content()
+        self.tag = ''
+        self.new_tag = ''
+        self.state = ''
 
     def display_screen_content(self):
         try:
@@ -18,7 +20,7 @@ class MyApp:
         except AttributeError:
             pass
         finally:
-            self.frm_tags_content = Frame(self.root, height=20, borderwidth=5, bg="black")
+            self.frm_tags_content = Frame(self.root, height=600, borderwidth=5, bg="black")
             self.frm_tags_content.pack(fill=X)
             self.btn_new_tag = Button(self.frm_tags_content, text="New Tag", bg="green")
             self.btn_new_tag.bind("<Button-1>", self.btn_new_tag_click)
@@ -48,6 +50,8 @@ class MyApp:
                 self.lbl_switch_to_tag_value.pack(side=LEFT)
 
             self.frm_content_scroll.pack(fill=X)
+            self.txt_to_text = Text(self.frm_tags_content)
+            self.txt_to_text.pack(fill=X)
 
     def get_current_tag(self, event):
         report_event(event)
@@ -60,15 +64,19 @@ class MyApp:
             tag_idx = int(tag_idx) - 1
         return self.tags[tag_idx]
 
-    def btn_delete_tag_click(self, event):
-        report_event(event)
-        tag = self.get_current_tag(event)
-        delete_tag(tags, tag)
-        AlertWindow(self.root, "Success", "Tag was deleted.")
-        self.display_screen_content()
+    def btn_new_tag_click(self, event):
+        self.display_screen_new_tag(event)
 
     def btn_update_tag_click(self, event):
         self.display_screen_update_tag(event)
+
+    def btn_delete_tag_click(self, event):
+        report_event(event)
+        tag = self.get_current_tag(event)
+        delete_tag(self.tags, tag)
+        AlertWindow(self.root, "Success", "Tag was deleted.")
+        self.display_screen_content()
+
 
     def display_screen_update_tag(self, event):
         try:
@@ -106,11 +114,11 @@ class MyApp:
 
     def btn_update_click(self, event):
         report_event(event)
-        self.new_tag = {}
+        self.new_tag = dict()
         self.new_tag["name"] = self.ent_name.get()
         self.new_tag["switch_to"] = self.txt_switch_to.get("1.0", END)[:-1]
 
-        update_status = update_tag(tags, self.tag, self.new_tag)
+        update_status = update_tag(self.tags, self.tag, self.new_tag)
         if update_status == "Tag updated.":
             self.tag = self.new_tag
             AlertWindow(self.frm_tags_content, "Success", "Tag was updated.")
@@ -124,9 +132,6 @@ class MyApp:
         report_event(event)
         self.frm_tags_content.destroy()
         self.display_screen_content()
-
-    def btn_new_tag_click(self, event):
-        self.display_screen_new_tag(event)
 
     def display_screen_new_tag(self, event):
         try:
@@ -159,22 +164,21 @@ class MyApp:
             self.btn_cancel.pack(side=RIGHT)
 
     def btn_create_click(self, event):
-            report_event(event)
-            tag = dict(name="", switch_to="")
-            tag["name"] = self.ent_name.get()
-            tag["switch_to"] = self.txt_switch_to.get("1.0", END)[:-1]
+        report_event(event)
+        tag = dict(name="", switch_to="")
+        tag["name"] = self.ent_name.get()
+        tag["switch_to"] = self.txt_switch_to.get("1.0", END)[:-1]
 
-            self.state = create_tag(self.tags, tag)
-            if self.state == "Tag created.":
-                AlertWindow(self.root, title="Success", text=self.state)
-                self.frm_tags_content.destroy()
-                return self.display_screen_content()
+        self.state = create_tag(self.tags, tag)
+        if self.state == "Tag created.":
+            AlertWindow(self.root, title="Success", text=self.state)
+            self.frm_tags_content.destroy()
+            return self.display_screen_content()
 
-            AlertWindow(self.root, title="Error", text=self.state)
+        AlertWindow(self.root, title="Error", text=self.state)
 
 
 class AlertWindow(Toplevel):
-
     def __init__(self, master=None, title="Alert", text="temp"):
         super().__init__(master=master)
         self.title(title)
@@ -215,18 +219,7 @@ def report_event(event):
         EventWidgetId={event.widget}, EventKeySymbol={event.keysym} \n')
 
 
-def get_template(path = "template\\tags.json"):
+def get_template(path="template\\tags.json"):
     with open(path, "r") as file_ref:
         raw_data = json.load(file_ref)
         return raw_data
-
-
-
-tags = get_template()['tags']
-
-root = Tk()
-root.geometry("800x300")
-root.title("Hotkeys")
-myapp = MyApp(root, tags)
-
-root.mainloop()

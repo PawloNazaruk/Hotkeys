@@ -50,7 +50,7 @@ def update_tag(tags, myDict, newDict):
 
     tags.append(newDict)
     keyboard.add_abbreviation(myDict['name'], myDict['name'])
-    keyboard.add_abbreviation(myDict['name'], myDict['switch_to'])
+    keyboard.add_abbreviation(newDict['name'], myDict['switch_to'])
     print("Tag was updated.")
     set_tag_template(tags)
     return "Tag updated."
