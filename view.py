@@ -20,7 +20,7 @@ class MyApp:
         except AttributeError:
             pass
         finally:
-            self.frm_tags_content = Frame(self.root, height=600, borderwidth=5, bg="black")
+            self.frm_tags_content = Frame(self.root, height=500, borderwidth=5, bg="black")
             self.frm_tags_content.pack(fill=X)
             self.btn_new_tag = Button(self.frm_tags_content, text="New Tag", bg="green")
             self.btn_new_tag.bind("<Button-1>", self.btn_new_tag_click)

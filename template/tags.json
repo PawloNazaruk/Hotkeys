@@ -1,40 +1,8 @@
 {
-    "tags": [
+    "my_data": [
         {
             "name": "@build",
-            "switch_to": "[currentBuild]"
-        },
-        {
-            "name": "@\"'",
-            "switch_to": "\"\"\""
-        },
-        {
-            "name": "@Mesh:",
-            "switch_to": "*Mesh:*{code:java}\n\n{code}"
-        },
-        {
-            "name": "@#LaunchMain",
-            "switch_to": "# Launch cyberpunk2077 - R6.Main from Final Deliverable."
-        },
-        {
-            "name": "@#LaunchRatings",
-            "switch_to": "# Launch cyberpunk2077 - R6.Ratings from Final Deliverable."
-        },
-        {
-            "name": "@Coordinates:",
-            "switch_to": "*Coordinates:*{code:java}\n\n{code}234234"
-        },
-        {
-            "name": "123",
-            "switch_to": "234"
-        },
-        {
-            "name": "@Benon",
-            "switch_to": "Beniz"
-        },
-        {
-            "name": "@Benon123456456",
-            "switch_to": "0000Beniz"
+            "switch_to": "Build12345678989"
         }
     ]
 }

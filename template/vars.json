@@ -1,5 +1,5 @@
 {
-  "vars": [
+  "my_data": [
     {
         "[currentBuild]": "Build12345678989"
     },
