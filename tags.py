@@ -8,27 +8,23 @@ class BaseValidationError(ValueError):
 
 
 class DictDoesntExistInList(BaseValidationError):
-    pass
+    msg = "Given dict doesn't exist in the list"
 
 
-class TagNameAlreadyUsed(BaseValidationError):
-    pass
+class DictWithNameAlreadyUsed(BaseValidationError):
+    msg = "Given name is already used, use another one."
 
 
-class FillNameEntry(BaseValidationError):
-    pass
+class FillName(BaseValidationError):
+    msg = "Name cannot be empty."
 
 
-class FillSwitchToEntry(BaseValidationError):
-    pass
+class FillSwitchTo(BaseValidationError):
+    msg = "Switch to cannot be empty."
 
 
 class FillBothEntries(BaseValidationError):
-    pass
-
-
-class TagNameIsUsed(BaseValidationError):
-    pass
+    msg = "Fill Name and Switch To entries."
 
 
 def read_json(path):
@@ -77,81 +73,101 @@ def dict_name_in_list(my_list, searched_dict):
     """
     for d in my_list:
         if searched_dict['name'] == d['name']:
-            raise TagNameAlreadyUsed
+            raise DictWithNameAlreadyUsed
     return 0
 
 
-def add_tag(tags, new_tag):
+def add_tag(my_list, new_dict, path):
     """Adds new_tag to the tags list if it doesn't already in it.
 
-    :param tags: list containing dict(s)
-    :param new_tag: tag dict to be added to the tags list
+    :param my_list: list containing dict(s)
+    :param new_dict: dict to be added to the tags list when requirements are met
     :return:
     """
-    if new_tag["name"] is "" and new_tag["switch_to"] is "":
+    if new_dict["name"] is "" and new_dict["switch_to"] is "":
         raise FillBothEntries
-    elif new_tag["name"] is "":
-        raise FillNameEntry
-    elif new_tag["switch_to"] is "":
-        raise FillSwitchToEntry
-    elif tag_name_exist(tags, new_tag):
-        raise TagNameAlreadyUsed
+    elif new_dict["name"] is "":
+        raise FillName
+    elif new_dict["switch_to"] is "":
+        raise FillSwitchTo
+    elif dict_name_in_list(my_list, new_dict):
+        raise DictWithNameAlreadyUsed
 
-    tags.append(new_tag)
-    # Creates new exchange from tag['name'] to tag['switch']
-    keyboard.add_abbreviation(new_tag["name"], new_tag["switch_to"])
-    write_to_json(path_tags)
+    my_list.append(new_dict)
+    # Will be overwriting after writing ['name'] to the ['switch_to'] value
+    keyboard.add_abbreviation(new_dict["name"], new_dict["switch_to"])
+    write_to_json(path, my_list)
 
 
-def update_tag(tags, current_tag, new_tag):
+def update_tag(my_list, current_dict, new_dict, path):
     """Searches for specific current_tag dict in the tags list,
     when found updates its content with new_tag dict.
 
-    :param tags: list containing dict(s)
-    :param current_tag: tag dict which content will be changed
-    :param new_tag: overwrites current_tag content with own
+    :param my_list: list containing dict(s)
+    :param current_dict: dict which content will be changed
+    :param new_dict: overwrites current_tag content with own data
+    :param path: dir to the json file
     :return:
     """
 
-    try:
-        tag_exist(tags, current_tag)
-    except TagKeyDoesntExist as err:
-        print(err.__name__)
+    if dict_in_list(my_list, current_dict):
+        raise DictDoesntExistInList
+
+    current_dict_index = my_list.index(current_dict)
+    temp_list = my_list[:current_dict_index] + my_list[current_dict_index + 1:]
+    if dict_name_in_list(temp_list, new_dict):
+        raise DictWithNameAlreadyUsed
+
+    my_list.pop(current_dict_index)
+    my_list.append(new_dict)
+
+    # Atm keyboard library doesn't give option to update/delete made abbreviation,
+    # so in order to reset it, it's behavior replacement_text is written as own name
+    keyboard.add_abbreviation(current_dict['name'], current_dict['name'])
+    # Using new_dict to create updated abbreviation
+    keyboard.add_abbreviation(new_dict['name'], new_dict['switch_to'])
+    write_to_json(path, my_list)
 
 
-    tags.pop(tags.index(current_tag))
-    if tag_name_exist(tags, new_tag):
-        tags.append(current_tag)
-        return "The name is already used in another tag."
+def delete_tag(my_list, my_dict, path):
+    """Deleting given dict from the list and json file at given path.
 
-    tags.append(new_tag)
-    keyboard.add_abbreviation(current_tag['name'], current_tag['name'])
-    keyboard.add_abbreviation(new_tag['name'], current_tag['switch_to'])
-    write_to_json(tags)
+    :param my_list: list containing dict(s)
+    :param my_dict: dict which will be deleted
+    :param path: dir to the json file
+    :return:
+    """
+    if dict_in_list(my_list, my_dict):
+        raise DictDoesntExistInList
 
-
-def delete_tag(tags, my_dict):
-    if not tag_exist(tags, my_dict):
-        return "Tag to delete doesn't exist."
-
-    pprint(f"delete_tag: {tags}")
-    tags.pop(tags.index(my_dict))
-    pprint(f"delete_tag after: {tags}")
+    my_list.pop(my_list.index(my_dict))
+    # Atm keyboard library doesn't give option to update/delete made abbreviation,
+    # so in order to delete it, it's behavior replacement_text is written as own name
     keyboard.add_abbreviation(my_dict['name'], my_dict['name'])
-    print("Tag was deleted.")
-    set_json(tags)
-    return "Tag deleted."
+    write_to_json(path, my_list)
 
 
-def create_abbreviation(tags, variables):
-    for my_dict in tags:
+def 
+
+
+def create_abbreviation(my_list):
+    """The function creates abbreviation for every dict in the given list.
+
+    :param my_list: list containing dict(s)
+    :return:
+    """
+    for d in my_list:
+        keyboard.add_abbreviation(d['name'], d['switch_to'])
+
+
+    for d in my_list:
         status = 'to_create'
-        for var in variables:
+        for var in replacements_list:
             for key, val in var.items():
-                if my_dict['switch_to'] == key:
-                    my_dict['switch_to'] = my_dict['switch_to'].replace(key, val)
-                    print(my_dict)
-                    keyboard.add_abbreviation(my_dict['name'], my_dict['switch_to'])
+                if d['switch_to'] == key:
+                    d['switch_to'] = d['switch_to'].replace(key, val)
+                    print(d)
+                    keyboard.add_abbreviation(d['name'], d['switch_to'])
                     status = 'created'
         if status == 'to_create':
-            keyboard.add_abbreviation(my_dict['name'], my_dict['switch_to'])
+            keyboard.add_abbreviation(d['name'], d['switch_to'])

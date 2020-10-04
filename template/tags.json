@@ -3,6 +3,10 @@
         {
             "name": "@build",
             "switch_to": "Build12345678989"
+        },
+        {
+            "name": "PEPE",
+            "switch_to": "SMALLU_PP"
         }
     ]
 }

@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62fb2646-c8ba-48fb-b431-9bb80e9db3df" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/tags.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/template/tags.json" beforeDir="false" afterPath="$PROJECT_DIR$/template/tags.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/vars.json" beforeDir="false" afterPath="$PROJECT_DIR$/template/vars.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,8 +149,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.tags" />
         <item itemvalue="Python.gui" />
+        <item itemvalue="Python.tags" />
         <item itemvalue="Python.view (1)" />
         <item itemvalue="Python.view" />
       </list>
@@ -176,22 +174,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1172" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598999714046" />
-    <state width="1015" height="206" key="GridCell.Tab.0.bottom" timestamp="1601759401428">
+    <state width="880" height="206" key="GridCell.Tab.0.bottom" timestamp="1601844911005">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1015" height="206" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1601759401428" />
-    <state width="1015" height="206" key="GridCell.Tab.0.center" timestamp="1601759401428">
+    <state width="880" height="206" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1601844911005" />
+    <state width="880" height="206" key="GridCell.Tab.0.center" timestamp="1601844911004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1015" height="206" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1601759401428" />
-    <state width="1015" height="206" key="GridCell.Tab.0.left" timestamp="1601759401428">
+    <state width="880" height="206" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1601844911004" />
+    <state width="880" height="206" key="GridCell.Tab.0.left" timestamp="1601844911002">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1015" height="206" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1601759401428" />
-    <state width="1015" height="206" key="GridCell.Tab.0.right" timestamp="1601759401428">
+    <state width="880" height="206" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1601844911002" />
+    <state width="880" height="206" key="GridCell.Tab.0.right" timestamp="1601844911004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1015" height="206" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601759401428" />
+    <state width="880" height="206" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601844911004" />
     <state x="461" y="151" key="SettingsEditor" timestamp="1598898795079">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

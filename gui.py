@@ -1,4 +1,7 @@
 from tkinter import *
+import keyboard
+import time
+
 
 root = Tk()
 
