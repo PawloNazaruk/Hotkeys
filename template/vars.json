@@ -1,10 +1,12 @@
 {
-  "my_data": [
-    {
-        "[currentBuild]": "Build12345678989"
-    },
-    {
-        "[asd]": "qwe"
-    }
-  ]
+    "my_data": [
+        {
+            "name": "@build",
+            "switch_to": "Build12345678989"
+        },
+        {
+            "name": "@Benon",
+            "switch_to": "Benizqweqwe"
+        }
+    ]
 }

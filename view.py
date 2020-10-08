@@ -1,181 +1,265 @@
 from tkinter import *
 from main import *
-import json
+from tags import *
+from vars import *
+from CRUD import *
+from collections import namedtuple
 import re
 
 
 class MyApp:
-    def __init__(self, root, tags):
+    def __init__(self, root, tags, variables):
         self.root = root
         self.tags = tags
+        self.variables = variables
+        self.Item = namedtuple("Item", "type list path name switch_to")
+        self.tag_item = self.Item("tag", self.tags, PATH_TAGS, "Tag name:", "Switch to:")
+        self.var_item = self.Item("var", self.variables, PATH_VARS, "Variable name:", "Switch to:")
+        self.my_active_tuple = ()
+        self.display_home()
 
-        self.display_screen_content()
-        self.tag = ''
-        self.new_tag = ''
-        self.state = ''
+    def btn_clicked_display_create_tag(self, event):
+        self.my_active_tuple = self.Item(*self.tag_item)
+        self.display_create_item(event)
 
-    def display_screen_content(self):
+    def btn_clicked_display_tags(self, event):
+        self.my_active_tuple = self.Item(*self.tag_item)
+        self.display_content(event)
+
+    def btn_clicked_display_create_var(self, event):
+        self.my_active_tuple = self.Item(*self.var_item)
+        self.display_create_item(event)
+
+    def btn_clicked_display_vars(self, event):
+        self.my_active_tuple = self.Item(*self.var_item)
+        self.display_content(event)
+
+    def display_menubar(self):
+        menubar = Menu(self.root)
+        menubar.add_command(label="Home", command=lambda: self.display_home())
+
+        tags = Menu(menubar, tearoff=False)
+        tags.add_command(label="New Tag", command=lambda: self.display_create_item("tags"))
+        tags.add_command(label="Show Tags", command=lambda: self.display_content)
+        menubar.add_cascade(label="Tags", menu=tags)
+
+        variables = Menu(menubar, tearoff=False)
+        variables.add_command(label="New Var", command=lambda: self.display_create_item("vars"))
+        variables.add_command(label="Show Vars", command=lambda: self.display_content)
+        menubar.add_cascade(label="Vars", menu=variables)
+
+        self.root.config(menu=menubar)
+
+    def display_home(self):
+        self.display_menubar()
         try:
-            self.frm_tags_content.destroy()
+            self.frm_background.destroy()
         except AttributeError:
             pass
         finally:
-            self.frm_tags_content = Frame(self.root, height=500, borderwidth=5, bg="black")
-            self.frm_tags_content.pack(fill=X)
-            self.btn_new_tag = Button(self.frm_tags_content, text="New Tag", bg="green")
-            self.btn_new_tag.bind("<Button-1>", self.btn_new_tag_click)
-            self.btn_new_tag.pack(side=TOP, fill=X)
-            self.frm_content_scroll = ScrollableFrame(self.frm_tags_content)
+            self.frm_background = Frame(self.root)
 
-            for tag in self.tags:
-                self.frm_tag = Frame(self.frm_content_scroll.scrollable_frame)
-                self.frm_tag.pack(fill=X)
+            lbl_test_yours_hotkey = Label(self.frm_background, text="Test your hotkey:")
+            lbl_test_yours_hotkey.pack()
+            txt_test_yours_hotkey = Text(self.frm_background)
+            txt_test_yours_hotkey.pack()
 
-                self.btn_update_tag = Button(self.frm_tag, text="Update Tag", bg="yellow")
-                self.btn_update_tag.bind("<Button-1>", self.btn_update_tag_click)
-                self.btn_update_tag.pack(side=LEFT)
+            frm_line_tag = Frame(self.frm_background)
+            btn_show_create_tag = Button(frm_line_tag, text="Create Tag")
+            btn_show_create_tag.bind("<Button-1>", self.btn_clicked_display_create_tag)
+            btn_show_create_tag.pack(fill=X)
+            btn_show_tags = Button(frm_line_tag, text="Show Tags")
+            btn_show_tags.bind("<Button-1>", self.btn_clicked_display_tags)
+            btn_show_tags.pack(fill=X)
+            frm_line_tag.pack(fill=X)
 
-                self.btn_delete_tag = Button(self.frm_tag, text="Delete Tag", bg="red")
-                self.btn_delete_tag.bind("<Button-1>", self.btn_delete_tag_click)
-                self.btn_delete_tag.pack(side=LEFT)
+            frm_line_vars = Frame(self.frm_background)
+            btn_show_create_var = Button(frm_line_vars, text="Create Var")
+            btn_show_create_var.bind("<Button-1>", self.btn_clicked_display_create_var)
+            btn_show_create_var.pack(fill=X)
+            btn_show_vars = Button(frm_line_vars, text="Show Vars")
+            btn_show_vars.bind("<Button-1>", self.btn_clicked_display_vars)
+            btn_show_vars.pack(fill=X)
+            frm_line_vars.pack(fill=X)
 
-                self.lbl_name = Label(self.frm_tag, text="Name: ", bg="cyan")
-                self.lbl_name.pack(side=LEFT)
-                self.lbl_name_tag_value = Label(self.frm_tag, text=tag['name'], bg="white", width=18, anchor=W)
-                self.lbl_name_tag_value.pack(side=LEFT)
+            self.frm_background.pack()
 
-                self.lbl_switch_to = Label(self.frm_tag, text="Switch_to", bg="cyan")
-                self.lbl_switch_to.pack(side=LEFT)
-                self.lbl_switch_to_tag_value = Label(self.frm_tag, text=tag['switch_to'], bg="white")
-                self.lbl_switch_to_tag_value.pack(side=LEFT)
+    def display_content(self, event):
+        self. display_menubar()
 
-            self.frm_content_scroll.pack(fill=X)
-            self.txt_to_text = Text(self.frm_tags_content)
-            self.txt_to_text.pack(fill=X)
+        try:
+            self.frm_background.destroy()
+        except AttributeError:
+            pass
+        finally:
+            self.frm_background = Frame(self.root)
+            self.frm_background.pack(fill=X)
+            frm_background_scrollable = ScrollableFrame(self.frm_background)
 
-    def get_current_tag(self, event):
-        report_event(event)
-        current_tag_regex = re.compile("frame(\d*)\.!button")
-        matched_object = current_tag_regex.findall(str(event.widget))
-        tag_idx = matched_object[0]
-        if tag_idx is "":
-            tag_idx = 0
+            for my_dict in self.my_active_tuple.list:
+                frm_data_row = Frame(frm_background_scrollable.scrollable_frame)
+                frm_data_row.pack(fill=X)
+
+                btn_show_update_item = Button(frm_data_row, text="Update "+self.my_active_tuple.type, bg="yellow")
+                btn_show_update_item.bind("<Button-1>", self.display_update_item)
+                btn_show_update_item.pack(side=LEFT)
+
+                btn_perform_delete_item = Button(frm_data_row, text="Delete "+self.my_active_tuple.type, bg="red")
+                btn_perform_delete_item.bind("<Button-1>", self.perform_delete_item)
+                btn_perform_delete_item.pack(side=LEFT)
+
+                lbl_item_name = Label(frm_data_row, text="Name: ", bg="cyan")
+                lbl_item_name.pack(side=LEFT)
+                lbl_item_name_value = Label(frm_data_row, text=my_dict["name"], bg="white", width=18, anchor=W)
+                lbl_item_name_value.pack(side=LEFT)
+
+                lbl_item_switch_to = Label(frm_data_row, text="Switch to: ", bg="cyan")
+                lbl_item_switch_to.pack(side=LEFT)
+                lbl_item_switch_to_value = Label(frm_data_row, text=my_dict["switch_to"], bg="white")
+                lbl_item_switch_to_value.pack(side=LEFT)
+            frm_background_scrollable.pack(fill=X)
+
+    def display_create_item(self, event):
+        self.display_menubar()
+
+        try:
+            self.frm_background.destroy()
+        except AttributeError:
+            pass
+        finally:
+            self.frm_background = Frame(self.root)
+
+            frm_line_header = Frame(self.frm_background)
+            lbl_item_name = Label(frm_line_header, text=self.my_active_tuple.name)
+            lbl_item_name.pack()
+            self.ent_item_name_value = Entry(frm_line_header)
+            self.ent_item_name_value.pack(fill=X)
+
+            lbl_item_switch_to_value = Label(frm_line_header, text=self.my_active_tuple.switch_to)
+            lbl_item_switch_to_value.pack()
+            self.txt_item_switch_to_value = Text(frm_line_header)
+            self.txt_item_switch_to_value.pack(fill=X)
+            frm_line_header.pack()
+
+            frm_line_buttons = Frame(self.frm_background)
+            btn_perform_create_item = Button(frm_line_buttons, text="Create", bg="green")
+            btn_perform_create_item.bind("<Button-1>", self.perform_create_item)
+            btn_perform_create_item.pack(fill=X)
+            btn_perform_exit = Button(frm_line_buttons, text="Cancel", bg="red")
+            btn_perform_exit.bind("<Button-1>", self.perform_exit)
+            btn_perform_exit.pack(fill=X)
+            frm_line_buttons.pack(fill=X)
+
+            self.frm_background.pack()
+
+    def display_update_item(self, event):
+        self.display_menubar()
+
+        try:
+            self.frm_background.destroy()
+        except AttributeError:
+            pass
+        finally:
+            self.my_item = self.get_current_item_from_content(event)
+
+            self.frm_background = Frame(self.root)
+
+            frm_line_header = Frame(self.frm_background)
+            lbl_item_name = Label(frm_line_header, text=self.my_active_tuple.name)
+            lbl_item_name.pack()
+            self.ent_item_name_value = Entry(frm_line_header)
+            self.ent_item_name_value.insert(0, self.my_item["name"])
+            self.ent_item_name_value.pack(fill=X)
+
+            lbl_item_switch_to_value = Label(frm_line_header, text=self.my_active_tuple.switch_to)
+            lbl_item_switch_to_value.pack()
+            self.txt_item_switch_to_value = Text(frm_line_header)
+            self.txt_item_switch_to_value.insert("1.0", self.my_item["switch_to"])
+            self.txt_item_switch_to_value.pack(fill=X)
+            frm_line_header.pack()
+
+            frm_line_buttons = Frame(self.frm_background)
+            btn_perform_create_item = Button(frm_line_buttons, text="Update", bg="green")
+            btn_perform_create_item.bind("<Button-1>", self.perform_create_item)
+            btn_perform_create_item.pack(fill=X)
+
+            btn_perform_exit = Button(frm_line_buttons, text="Cancel", bg="red")
+            btn_perform_exit.bind("<Button-1>", self.display_content)
+            btn_perform_exit.pack(fill=X)
+            frm_line_buttons.pack(fill=X)
+
+            self.frm_background.pack()
+
+    def perform_create_item(self, event):
+        my_dict = dict(name="", switch_to="")
+        my_dict["name"] = self.ent_item_name_value.get()
+        my_dict["switch_to"] = self.txt_item_switch_to_value.get("1.0", END)[:-1]
+
+        try:
+            if "tag" in self.my_active_tuple.type:
+                add_tag(self.tags, self.variables, my_dict, self.my_active_tuple.path)
+            elif "var" in self.my_active_tuple.type:
+                add_var(self.variables, my_dict, self.my_active_tuple.path)
+        except FillBothEntries as err:
+            AlertWindow(self.root, title="Error", text=err.msg)
+        except FillName as err:
+            AlertWindow(self.root, title="Error", text=err.msg)
+        except FillSwitchTo as err:
+            AlertWindow(self.root, title="Error", text=err.msg)
+        except DictWithNameAlreadyUsed as err:
+            log = "Cannot add: Name: " + str(my_dict["name"]) + " - " + str(err.msg)
+            AlertWindow(self.root, title="Error", text=log)
         else:
-            tag_idx = int(tag_idx) - 1
-        return self.tags[tag_idx]
+            AlertWindow(self.root, title="Success", text="Created.")
+            self.display_home()
 
-    def btn_new_tag_click(self, event):
-        self.display_screen_new_tag(event)
+    def perform_update_item(self, event):
+        my_dict = dict(name="", switch_to="")
+        my_dict["name"] = self.ent_item_name_value.get()
+        my_dict["switch_to"] = self.txt_item_switch_to_value.get("1.0", END)[:-1]
 
-    def btn_update_tag_click(self, event):
-        self.display_screen_update_tag(event)
-
-    def btn_delete_tag_click(self, event):
-        report_event(event)
-        tag = self.get_current_tag(event)
-        delete_tag(self.tags, tag)
-        AlertWindow(self.root, "Success", "Tag was deleted.")
-        self.display_screen_content()
-
-
-    def display_screen_update_tag(self, event):
         try:
-            self.frm_tags_content.destroy()
-        except AttributeError:
-            pass
-        finally:
-            self.tag = self.get_current_tag(event)
+            if "tag" in self.my_active_tuple.type:
+                update_tag(self.tags, self.variables, self.my_item, my_dict, self.my_active_tuple.path)
+            elif "var" in self.my_active_tuple.type:
+                update_var(self.variables, self.my_item, my_dict, self.my_active_tuple.path)
+        except FillBothEntries as err:
+            AlertWindow(self.root, title="Error", text=err.msg)
+        except FillName as err:
+            AlertWindow(self.root, title="Error", text=err.msg)
+        except FillSwitchTo as err:
+            AlertWindow(self.root, title="Error", text=err.msg)
+        except DictWithNameAlreadyUsed as err:
+            log = "Cannot add: Name: " + str(my_dict["name"]) + " - " + str(err.msg)
+            AlertWindow(self.root, title="Error", text=log)
+        else:
+            AlertWindow(self.root, title="Success", text="Updated.")
+            self.display_home()
 
-            self.frm_tags_content = Frame(self.root)
-            self.frm_tags_content.pack(fill=X)
-
-            self.lbl_name = Label(self.frm_tags_content, text="Name")
-            self.lbl_name.pack()
-            self.ent_name = Entry(self.frm_tags_content)
-            self.ent_name.insert(0, self.tag["name"])
-            self.ent_name.pack()
-
-            self.lbl_switch_to = Label(self.frm_tags_content, text="Switch_to")
-            self.lbl_switch_to.pack()
-            self.txt_switch_to = Text(self.frm_tags_content)
-            self.txt_switch_to.insert("1.0", self.tag["switch_to"])
-            self.txt_switch_to.pack(fill=X)
-
-            self.frm_buttons_line = Frame(self.frm_tags_content)
-            self.frm_buttons_line.pack()
-
-            self.btn_update = Button(self.frm_buttons_line, text="Update", bg="yellow")
-            self.btn_update.bind("<Button-1>", self.btn_update_click)
-            self.btn_update.pack(side=LEFT)
-
-            self.btn_cancel = Button(self.frm_buttons_line, text="Cancel", bg="red")
-            self.btn_cancel.bind("<Button-1>", self.btn_close_click)
-            self.btn_cancel.pack(side=RIGHT)
-
-    def btn_update_click(self, event):
+    def perform_delete_item(self, event):
         report_event(event)
-        self.new_tag = dict()
-        self.new_tag["name"] = self.ent_name.get()
-        self.new_tag["switch_to"] = self.txt_switch_to.get("1.0", END)[:-1]
-
-        update_status = update_tag(self.tags, self.tag, self.new_tag)
-        if update_status == "Tag updated.":
-            self.tag = self.new_tag
-            AlertWindow(self.frm_tags_content, "Success", "Tag was updated.")
-            self.frm_tags_content.destroy()
-            return self.display_screen_content()
-
-        AlertWindow(self.frm_tags_content, "Error", update_status)
-        return
-
-    def btn_close_click(self, event):
-        report_event(event)
-        self.frm_tags_content.destroy()
-        self.display_screen_content()
-
-    def display_screen_new_tag(self, event):
+        item_to_delete = self.get_current_item_from_content(event)
         try:
-            self.frm_tags_content.destroy()
-        except AttributeError:
-            pass
-        finally:
-            self.frm_tags_content = Frame(self.root)
-            self.frm_tags_content.pack(fill=X)
+            delete_tag(self.my_active_tuple.list, item_to_delete, self.my_active_tuple.path)
+        except DictDoesntExistInList as err:
+            AlertWindow(self.root, "Error", "There is no such " + self.my_active_tuple.type)
+        else:
+            AlertWindow(self.root, "Success", "Tag was deleted.")
+            self.display_home()
 
-            self.lbl_name = Label(self.frm_tags_content, text="Name")
-            self.lbl_name.pack()
-            self.ent_name = Entry(self.frm_tags_content)
-            self.ent_name.pack()
+    def perform_exit(self, event):
+        self.display_home()
 
-            self.lbl_switch_to = Label(self.frm_tags_content, text="Switch_to")
-            self.lbl_switch_to.pack()
-            self.txt_switch_to = Text(self.frm_tags_content)
-            self.txt_switch_to.pack(fill=X)
-
-            self.frm_buttons_line = Frame(self.frm_tags_content)
-            self.frm_buttons_line.pack()
-
-            self.btn_create = Button(self.frm_buttons_line, text="Create", bg="green")
-            self.btn_create.bind("<Button-1>", self.btn_create_click)
-            self.btn_create.pack(side=LEFT)
-
-            self.btn_cancel = Button(self.frm_buttons_line, text="Cancel", bg="red")
-            self.btn_cancel.bind("<Button-1>", self.btn_close_click)
-            self.btn_cancel.pack(side=RIGHT)
-
-    def btn_create_click(self, event):
+    def get_current_item_from_content(self, event):
         report_event(event)
-        tag = dict(name="", switch_to="")
-        tag["name"] = self.ent_name.get()
-        tag["switch_to"] = self.txt_switch_to.get("1.0", END)[:-1]
-
-        self.state = create_tag(self.tags, tag)
-        if self.state == "Tag created.":
-            AlertWindow(self.root, title="Success", text=self.state)
-            self.frm_tags_content.destroy()
-            return self.display_screen_content()
-
-        AlertWindow(self.root, title="Error", text=self.state)
+        item_regex = re.compile("frame(\d*)\.!button")
+        matched_object = item_regex.findall(str(event.widget))
+        item_idx = matched_object[0]
+        if item_idx is "":
+            item_idx = 0
+        else:
+            item_idx = int(item_idx) - 1
+        return self.my_active_tuple.list[item_idx]
 
 
 class AlertWindow(Toplevel):
@@ -194,7 +278,6 @@ class ScrollableFrame(Frame):
         canvas = Canvas(self)
         scrollbar = Scrollbar(self, orient="vertical", command=canvas.yview)
         self.scrollable_frame = Frame(canvas)
-
         self.scrollable_frame.bind(
             "<Configure>",
             lambda e: canvas.configure(
@@ -203,9 +286,7 @@ class ScrollableFrame(Frame):
         )
 
         canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-
         canvas.configure(yscrollcommand=scrollbar.set)
-
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
@@ -219,7 +300,3 @@ def report_event(event):
         EventWidgetId={event.widget}, EventKeySymbol={event.keysym} \n')
 
 
-def get_template(path="template\\tags.json"):
-    with open(path, "r") as file_ref:
-        raw_data = json.load(file_ref)
-        return raw_data
