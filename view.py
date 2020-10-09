@@ -180,7 +180,7 @@ class MyApp:
 
             frm_line_buttons = Frame(self.frm_background)
             btn_perform_create_item = Button(frm_line_buttons, text="Update", bg="green")
-            btn_perform_create_item.bind("<Button-1>", self.perform_create_item)
+            btn_perform_create_item.bind("<Button-1>", self.perform_update_item)
             btn_perform_create_item.pack(fill=X)
 
             btn_perform_exit = Button(frm_line_buttons, text="Cancel", bg="red")
