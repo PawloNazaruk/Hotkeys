@@ -1,5 +1,6 @@
 from tags import create_override_abbreviation
-from view import *
+from CRUD import *
+from vieww import *
 
 PATH_TAGS = "template\\tags.json"
 PATH_VARS = "template\\vars.json"
@@ -12,7 +13,7 @@ def main():
     for my_dict in tags:
         create_override_abbreviation(override_list, my_dict)
 
-    root = Tk()
+    root = tk.Tk()
     root.geometry("800x600")
     root.title("Hotkeys")
     myapp = MyApp(root, tags, override_list)
