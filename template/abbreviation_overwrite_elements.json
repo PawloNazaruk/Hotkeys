@@ -1,0 +1,24 @@
+{
+    "elements": [
+        {
+            "string_to_find": "@VARS",
+            "replace_to": "VARSRARSSR"
+        },
+        {
+            "string_to_find": "@IOIOIO",
+            "replace_to": "Benizqweqwe"
+        },
+        {
+            "string_to_find": "@IOIOIO",
+            "replace_to": "Benizqweqwe"
+        },
+        {
+            "string_to_find": "@IOIOIO",
+            "replace_to": "Benizqweqwe"
+        },
+        {
+            "string_to_find": "@IOIOIO",
+            "replace_to": "Benizqweqwe"
+        }
+    ]
+}

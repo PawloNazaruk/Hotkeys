@@ -1,22 +1,34 @@
-from tags import create_override_abbreviation
+from tags import set_abbreviation
 from CRUD import *
 from vieww import *
+from collections import namedtuple
+from pprint import pprint
 
-PATH_TAGS = "template\\tags.json"
-PATH_VARS = "template\\vars.json"
+PATH_ABBREVIATION_ELEMENTS = "template/abbreviation_elements.json"
+PATH_ABBREVIATION_OVERWRITE_ELEMENTS = "template/abbreviation_overwrite_elements.json"
+
+# better name for \abbreviation_overwrite/??
 
 
 def main():
-    tags = read_json(PATH_TAGS)['my_data']
-    override_list = read_json(PATH_VARS)['my_data']
+    Content = namedtuple("Abbreviation", [
+        "name",
+        "elements",
+        "path",
+    ])
 
-    for my_dict in tags:
-        create_override_abbreviation(override_list, my_dict)
+    abb_elements = read_json(PATH_ABBREVIATION_ELEMENTS)['elements']
+    abb_overwrite_elements = read_json(PATH_ABBREVIATION_OVERWRITE_ELEMENTS)['elements']
+
+    abbreviation = Content("abbreviation", abb_elements, PATH_ABBREVIATION_ELEMENTS)
+    abbreviation_overwrite = Content("abbreviation_overwrite",abb_overwrite_elements, PATH_ABBREVIATION_OVERWRITE_ELEMENTS)
+
+    [set_abbreviation(element, *abbreviation_overwrite.elements) for element in abbreviation.elements]
 
     root = tk.Tk()
     root.geometry("800x600")
-    root.title("Hotkeys")
-    myapp = MyApp(root, tags, override_list)
+    root.title("Peon")
+    myapp = MyApp(root, abbreviation, abbreviation_overwrite)
 
     root.mainloop()
 

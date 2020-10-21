@@ -1,0 +1,16 @@
+{
+    "elements": [
+        {
+            "string_to_write": "@build",
+            "replace_to": "Build12345678989"
+        },
+        {
+            "string_to_write": "@Benon",
+            "replace_to": "Benizqweqwqweqwe"
+        },
+        {
+            "string_to_write": "@Benoninfas",
+            "replace_to": "Beno @333"
+        }
+    ]
+}

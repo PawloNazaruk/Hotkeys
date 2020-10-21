@@ -47,7 +47,7 @@ def write_to_json(path, my_list):
     """
     with open(path, "r+") as file_ref:
         file_ref.seek(0)
-        json.dump(dict(my_data=my_list), file_ref, indent=4)
+        json.dump(dict(elements=my_list), file_ref, indent=4)
         file_ref.truncate()
 
 
@@ -117,7 +117,7 @@ def update_dict(my_list, current_dict, new_dict):
     my_list.append(new_dict)
 
 
-def delete_dict(my_list, my_dict):
+def delete_dict(my_dict, my_list):
     """Deleting given dict from the list and json file at given path.
 
     :param my_list: list containing dict(s)
