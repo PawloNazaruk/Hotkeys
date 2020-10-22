@@ -78,25 +78,28 @@ def dict_duplicated_key_in_list(my_list, searched_dict, key):
     return 0
 
 
-def add_dict(my_list, new_dict):
+def add_dict(new_dict, my_list):
     """If dict meets requirements of not empty values then is added to the list.
 
     :param my_list: list containing dict(s)
     :param new_dict: dict which will be added
     :return:
     """
-    if new_dict["name"] is "" and new_dict["switch_to"] is "":
+    name = new_dict.get(list(new_dict.keys())[0])
+    content = new_dict.get("replace_to")
+
+    if name is "" and content is "":
         raise FillBothEntries
-    elif new_dict["name"] is "":
+    elif name is "":
         raise FillName
-    elif new_dict["switch_to"] is "":
+    elif content is "":
         raise FillSwitchTo
-    elif dict_duplicated_key_in_list(my_list, new_dict, "name"):
+    elif dict_duplicated_key_in_list(my_list, new_dict, list(new_dict.keys())[0]):
         raise DictWithNameAlreadyUsed
     my_list.append(new_dict)
 
 
-def update_dict(my_list, current_dict, new_dict):
+def update_dict(new_dict, current_dict, my_list):
     """Searches for specific current_tag dict in the tags list,
     when found updates its content with new_tag dict.
 
@@ -110,7 +113,7 @@ def update_dict(my_list, current_dict, new_dict):
 
     current_dict_index = my_list.index(current_dict)
     temp_list = my_list[:current_dict_index] + my_list[current_dict_index + 1:]
-    if dict_duplicated_key_in_list(temp_list, new_dict, "name"):
+    if dict_duplicated_key_in_list(temp_list, new_dict, list(new_dict.keys()[0])):
         raise DictWithNameAlreadyUsed
 
     my_list.pop(current_dict_index)

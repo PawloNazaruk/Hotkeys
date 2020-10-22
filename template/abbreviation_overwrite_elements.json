@@ -1,24 +1,24 @@
 {
     "elements": [
         {
-            "string_to_find": "@VARS",
-            "replace_to": "VARSRARSSR"
+            "string_to_find": "@Benoninfas",
+            "replace_to": "Beno @333"
         },
         {
-            "string_to_find": "@IOIOIO",
-            "replace_to": "Benizqweqwe"
+            "string_to_find": "@Benoninfas",
+            "replace_to": "Beno @333"
         },
         {
-            "string_to_find": "@IOIOIO",
-            "replace_to": "Benizqweqwe"
+            "string_to_find": "@Benoninfas",
+            "replace_to": "Beno @333"
         },
         {
-            "string_to_find": "@IOIOIO",
-            "replace_to": "Benizqweqwe"
+            "string_to_find": "sdfsf",
+            "replace_to": "qweqwe"
         },
         {
-            "string_to_find": "@IOIOIO",
-            "replace_to": "Benizqweqwe"
+            "string_to_find": "yahiiiioooohhhjjjjj",
+            "replace_to": "yahiiiioooohhhjjjjjyahiiiioooohhhjjjjjyahiiiioooohhhjjjjj"
         }
     ]
 }

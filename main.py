@@ -23,7 +23,7 @@ def main():
     abbreviation = Content("abbreviation", abb_elements, PATH_ABBREVIATION_ELEMENTS)
     abbreviation_overwrite = Content("abbreviation_overwrite",abb_overwrite_elements, PATH_ABBREVIATION_OVERWRITE_ELEMENTS)
 
-    [set_abbreviation(element, *abbreviation_overwrite.elements) for element in abbreviation.elements]
+    [set_abbreviation(element, abbreviation_overwrite.elements) for element in abbreviation.elements]
 
     root = tk.Tk()
     root.geometry("800x600")

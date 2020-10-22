@@ -3,7 +3,7 @@ import keyboard
 from CRUD import *
 
 
-def set_abbreviation(item, *overwrite_list):
+def set_abbreviation(item, overwrite_list):
     """ Create abbreviation from the item, could by updated by overwrite element value.
 
     :param item: base for creating abbreviation ['string_to_write'] -> ['replace_to'] values
@@ -37,12 +37,4 @@ def update_abbreviation_element(my_list, override_list, current_dict, new_dict, 
     """
     update_dict(my_list, current_dict, new_dict)
     set_abbreviation(override_list, new_dict)
-    write_to_json(path, my_list)
-
-
-def delete_abbreviation_element(my_list, my_dict, path):
-    # Atm keyboard library doesn't give option to update/delete made abbreviation,
-    # so in order to delete it, it's behavior replacement_text is written as own name
-    delete_dict(my_dict, my_list)
-    keyboard.add_abbreviation(my_dict['name'], my_dict['name'])
     write_to_json(path, my_list)
