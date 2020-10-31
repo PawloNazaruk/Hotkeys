@@ -1,5 +1,6 @@
-# Hotkeys
+# Peon
 
-The program allows for userdefined text data which will be written in the place of also user defined tags/variables.
-Scrypt listens for every keyboard character input, when input will match user created tags/variables then their text content will be written in their place.
-The data can be managed by simple GUI, and is stored in json.
+The program allows for mapping abbreviation in simple GUI, which switches written text from keyboard to any other 
+previously set up. It is also possible to create text template where it's values will be changed to other text.  
+Ex. mapping hw = Hello World will write Hello World every time h/w/space keyboard button is pressed. 
+

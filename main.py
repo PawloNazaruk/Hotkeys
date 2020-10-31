@@ -1,34 +1,20 @@
-from tags import set_abbreviation
-from CRUD import *
-from vieww import *
-from collections import namedtuple
-from pprint import pprint
+from view.abbreviation_manager import *
+from clss.normal import *
+from clss.overwrite import *
 
-PATH_ABBREVIATION_ELEMENTS = "template/abbreviation_elements.json"
-PATH_ABBREVIATION_OVERWRITE_ELEMENTS = "template/abbreviation_overwrite_elements.json"
 
-# better name for \abbreviation_overwrite/??
+PATH_ABBOVERWRITE = "template/abboverwrite_elements.json"
+PATH_ABB = "template/abb_elements.json"
 
 
 def main():
-    Content = namedtuple("Abbreviation", [
-        "name",
-        "elements",
-        "path",
-    ])
-
-    abb_elements = read_json(PATH_ABBREVIATION_ELEMENTS)['elements']
-    abb_overwrite_elements = read_json(PATH_ABBREVIATION_OVERWRITE_ELEMENTS)['elements']
-
-    abbreviation = Content("abbreviation", abb_elements, PATH_ABBREVIATION_ELEMENTS)
-    abbreviation_overwrite = Content("abbreviation_overwrite",abb_overwrite_elements, PATH_ABBREVIATION_OVERWRITE_ELEMENTS)
-
-    [set_abbreviation(element, abbreviation_overwrite.elements) for element in abbreviation.elements]
+    abbs_overwrite = AbbsOverwrite(PATH_ABBOVERWRITE)
+    abbs = Abbs(PATH_ABB, abbs_overwrite.elements)
 
     root = tk.Tk()
     root.geometry("800x600")
     root.title("Peon")
-    myapp = MyApp(root, abbreviation, abbreviation_overwrite)
+    myapp = MyApp(root, abbs, abbs_overwrite)
 
     root.mainloop()
 
