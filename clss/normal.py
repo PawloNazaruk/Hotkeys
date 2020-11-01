@@ -2,11 +2,12 @@ import json
 import keyboard
 from clss.error_cls import *
 
+from pprint import pprint
+
 
 class Abb:
     """ Abbreviation object which changes written "name" value to the "text".
-    It's "text" value can be also modified by AbbOverwrite objects.
-    """
+    It's "text" value can be also modified by AbbOverwrite objects. """
     def __init__(self, name, text):
         self.name = name
         self.text = text
@@ -58,8 +59,7 @@ class Abb:
 
 
 class Abbs:
-    """ CRUD for the Abb objects.
-    """
+    """ CRUD for the Abb objects. """
     elements = []
 
     def __init__(self, path, abbs_overwrite_elements):
@@ -131,7 +131,9 @@ class Abbs:
         elif updated_text is "":
             raise FillText
 
+        pprint(f".elements:\n {self.elements}")
         element_index = self.elements.index(abb)
+        pprint(f"element_index: {element_index}")
         self.elements.remove(abb)
 
         if self.element_name_in(updated_name):
@@ -141,7 +143,7 @@ class Abbs:
         abb.delete_abbreviation()  # Sets previous matching to "name"->"name"
         new_abb = Abb(updated_name, updated_text)
         new_abb.set_abbreviation(self.abb_overwrite_elements)  # Sets active matching "name"->"text"
-        self.elements.append(new_abb)
+        self.elements.insert(element_index, new_abb)
         self.save_elements()
 
     def delete_element(self, abb):

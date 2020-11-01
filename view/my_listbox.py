@@ -4,12 +4,11 @@ import tkinter as tk
 class MyListbox(tk.Listbox):
     """ Modified Listbox widget with methods for:
      handling displayed content, CRUD and
-     walking with keyboard shortcuts over its content
-    """
-
+     walking with keyboard shortcuts over its content """
     def __init__(self, elements, *args, **kwargs):
         super().__init__(*args, elements, **kwargs)
         #self.bind('<<ListboxSelect>>', self.on_lb_click)
+        self.bind('<Return>', self.on_lb_click)
         self.bind("<Up>", self.on_press_move_up)
         self.bind("<Down>", self.on_press_move_down)
         self.elements = []
@@ -34,6 +33,11 @@ class MyListbox(tk.Listbox):
         for index, element in enumerate(self.elements, 1):
             text = f"{index}. {self.make_pattern((element.name, element.text))}"
             self.insert(tk.END, text)
+
+    def on_lb_click(self, evt):
+        #w = evt.widget
+        print(self.curselection_value())
+
 
     @classmethod
     def make_pattern(cls, args):
@@ -61,7 +65,6 @@ class MyListbox(tk.Listbox):
         :return: abb/abb_overwrite object
         """
         return self.elements[self.curselection()[0]]
-
 
     def on_press_move_up(self, evt):
         """ Moves currently selection upwards by pressing "UP" keyboard button.

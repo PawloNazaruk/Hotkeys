@@ -3,6 +3,10 @@
         {
             "name": "Hello World",
             "text": "Hello World!!!!"
+        },
+        {
+            "name": "[#build]",
+            "text": "my_buildCL4135443"
         }
     ]
 }

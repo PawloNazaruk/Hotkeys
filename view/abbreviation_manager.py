@@ -2,13 +2,17 @@ from collections import namedtuple
 from view.my_listbox import *
 from clss.overwrite import *
 from tkinter import messagebox
+from tkinter import ttk
+
+#import tkinter as tk
+
+
 
 # TODO sliders shouldn't grow with bigger window or set window as static?
 
 
 class MyApp:
-    """ GUI view.
-    """
+    """ Main Gui Class """
     def __init__(self, root, abbs, abbs_overwrite):
         self.root = root
         AbbsGroup = namedtuple("AbbGroup", [
@@ -44,14 +48,14 @@ class MyApp:
         self.frm_form.place(relheight=1, relwidth=0.7)
 
         # Top "Name" section row.
-        lbl_name = tk.Label(self.frm_form, text="Name: ", anchor=tk.W, bd=2, relief="groove")
+        lbl_name = ttk.Label(self.frm_form, text="Name: ", anchor=tk.W, relief="groove")
         lbl_name.place(relx=0.00, rely=0.00, relheight=0.05, relwidth=0.08)
-        self.ent_name = tk.Entry(self.frm_form)
+        self.ent_name = ttk.Entry(self.frm_form)
         self.ent_name.insert(0, "")
         self.ent_name.place(relx=0.08, rely=0.00, relheight=0.05, relwidth=0.92)
 
         # Middle "Text" section box.
-        lbl_replace_to = tk.Label(self.frm_form, text="Replace to: ", anchor=tk.W, bd=2, relief="groove")
+        lbl_replace_to = ttk.Label(self.frm_form, text="Replace to: ", anchor=tk.W, relief="groove")
         lbl_replace_to.place(relx=0.00, rely=0.05, relheight=0.05, relwidth=0.12)
         self.txt_replace_to = tk.Text(self.frm_form)
         self.txt_replace_to.insert("1.0", "")
@@ -61,6 +65,12 @@ class MyApp:
         sb_replace_to.place(relx=0.97, rely=0.10, relheight=0.85, relwidth=0.03)
         self.txt_replace_to.config(yscrollcommand=sb_replace_to.set)
         sb_replace_to.config(command=self.txt_replace_to.yview)
+
+        if self.abbs_group.abbs.elements[0].name == "Help":
+            help_info = self.abbs_group.abbs.elements[0].name
+            self.ent_name.insert(0, help_info)
+            help_info = self.abbs_group.abbs.elements[0].text
+            self.txt_replace_to.insert("1.0", help_info)
 
         # Bottom "Buttons" row, which are created from other methods.
 
@@ -84,9 +94,7 @@ class MyApp:
         radio_btn_2.place(relx=0.5, rely=0.00, relheight=0.05, relwidth=0.5)
         # Sets "abbs" as a default focused_abb list.
         radio_btn_2.select()
-        print(self.focused_abb)
         if self.focused_abb == self.abbs_group.abbs:
-            print(self.focused_abb)
             radio_btn_1.select()
 
         # Between Top row and list_box window, section for searching element name.
@@ -106,12 +114,25 @@ class MyApp:
         listbox_scrollbar.config(command=self.list_box.yview)
 
         # Bottom "CRUD buttons" row.
-        btn_new_item = tk.Button(frm_list, text="New", bd=3, command=self.btn_new_item_clicked)
-        btn_new_item.place(relx=0.00, rely=0.95, relwidth=0.33, relheight=0.05)
-        btn_update_item = tk.Button(frm_list, text="Update", bd=3, command=self.btn_update_item_clicked)
-        btn_update_item.place(relx=0.33, rely=0.95, relwidth=0.34, relheight=0.05)
-        btn_delete_item = tk.Button(frm_list, text="Delete", bd=3, command=self.process_delete_item)
-        btn_delete_item.place(relx=0.67, rely=0.95, relwidth=0.33, relheight=0.05)
+        btn_show_item = ttk.Button(frm_list, text="Show", command=self.btn_show_item_clicked)
+        btn_show_item.place(relx=0.00, rely=0.95, relwidth=0.25, relheight=0.05)
+        btn_new_item = ttk.Button(frm_list, text="New", command=self.btn_new_item_clicked)
+        btn_new_item.place(relx=0.25, rely=0.95, relwidth=0.25, relheight=0.05)
+        btn_update_item = ttk.Button(frm_list, text="Update", command=self.btn_update_item_clicked)
+        btn_update_item.place(relx=0.50, rely=0.95, relwidth=0.25, relheight=0.05)
+        btn_delete_item = ttk.Button(frm_list, text="Delete", command=self.process_delete_item)
+        btn_delete_item.place(relx=0.75, rely=0.95, relwidth=0.25, relheight=0.05)
+
+    def btn_show_item_clicked(self):
+        """ Displays in form currently selected element in listbox.
+
+        :return:
+        """
+        abb = self.list_box.curselection_value()
+        self.ent_name.delete(0, tk.END)
+        self.ent_name.insert(0, abb.name)
+        self.txt_replace_to.delete("1.0", tk.END)
+        self.txt_replace_to.insert("1.0", abb.text)
 
     def process_search_button(self, evt):
         """ From given event takes written "name" value
@@ -159,9 +180,9 @@ class MyApp:
         self.ent_name.delete(0, tk.END)  # clears content from the "Name: "
         self.txt_replace_to.delete("1.0", tk.END)  # clears content from the "Replace to: "
         # Bottom "Buttons" row in form.
-        btn_submit = tk.Button(self.frm_form, text="Submit", bd=3, command=self.process_new_item)
+        btn_submit = ttk.Button(self.frm_form, text="Submit", command=self.process_new_item)
         btn_submit.place(relx=0.63, rely=0.95, relwidth=0.17, relheight=0.05)
-        btn_cancel = tk.Button(self.frm_form, text="Cancel", bd=3, command=self.display_home)
+        btn_cancel = ttk.Button(self.frm_form, text="Cancel", command=self.display_home)
         btn_cancel.place(relx=0.80, rely=0.95, relwidth=0.17, relheight=0.05)
 
     def process_new_item(self):
@@ -198,16 +219,16 @@ class MyApp:
         self.new_item_origin_group = self.focused_abb  # set origin list
         self.ent_name.delete(0, tk.END)  # clears content from the "Name: "
         self.txt_replace_to.delete("1.0", tk.END)  # clears content from the "Replace to: "
-
         abb = self.list_box.curselection_value()
+
         self.ent_name.insert(0, abb.name)
         self.txt_replace_to.insert("1.0", abb.text)
-        btn_submit = tk.Button(self.frm_form, text="Submit", bd=3, command=lambda: self.process_update_item(abb))
+        btn_submit = ttk.Button(self.frm_form, text="Submit", command=lambda: self.process_update_item(abb))
         btn_submit.place(relx=0.63, rely=0.95, relwidth=0.17, relheight=0.05)
-        btn_cancel = tk.Button(self.frm_form, text="Cancel", bd=3, command=self.display_home)
+        btn_cancel = ttk.Button(self.frm_form, text="Cancel", command=self.display_home)
         btn_cancel.place(relx=0.80, rely=0.95, relwidth=0.17, relheight=0.05)
 
-    def process_update_item(self, abb_updated):
+    def process_update_item(self, abb):
         """ Validation of the given data if succeeded new element is added
         and list_box displays updated values.
         Depending on new_item_origin_group it performs process for abbs/abbs_overwrite.
@@ -218,11 +239,12 @@ class MyApp:
 
         new_name = self.ent_name.get()
         new_text = self.txt_replace_to.get("1.0", tk.END)[:-1]  # cut endl sign
-
+        print(f"new_name: {new_name}")
+        print(f"new_text: {new_text}")
         # Process of adding new item for abbs.
         if self.new_item_origin_group == self.abbs_group.abbs:
             try:
-                self.abbs_group.abbs.update_element(abb_updated, new_name, new_text)
+                self.abbs_group.abbs.update_element(abb, new_name, new_text)
                 self.list_box.insert_elements(self.abbs_group.abbs.elements)
                 self.display_home()
                 messagebox.showinfo("Success", "Matching was updated.")
@@ -231,7 +253,7 @@ class MyApp:
         # Process of adding new item for abbs_overwrite.
         elif self.new_item_origin_group == self.abbs_group.abbs_overwrite:
             try:
-                self.abbs_group.abbs.update_element(abb_updated, new_name, new_text)
+                self.abbs_group.abbs_overwrite.update_element(abb, new_name, new_text)
                 # Invoking matching new abbreviation for Abb objects.
                 self.abbs_group.abbs.set_all_abbreviation(self.abbs_group.abbs_overwrite.elements)
                 self.list_box.insert_elements(self.abbs_group.abbs_overwrite.elements)

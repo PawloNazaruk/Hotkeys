@@ -1,7 +1,7 @@
 from view.abbreviation_manager import *
 from clss.normal import *
 from clss.overwrite import *
-
+import tkinter as tk
 
 PATH_ABBOVERWRITE = "template/abboverwrite_elements.json"
 PATH_ABB = "template/abb_elements.json"

@@ -3,8 +3,7 @@ from clss.error_cls import *
 
 
 class AbbOverwrite:
-    """ Object which replace found "name" string in given location with own "text" string value.
-    """
+    """ Object which replace found "name" string in given location with own "text" string value. """
     def __init__(self, name, text):
         self.name = name
         self.text = text
@@ -23,8 +22,7 @@ class AbbOverwrite:
 
 
 class AbbsOverwrite:
-    """ CRUD for the AbbOverwrite objects.
-    """
+    """ CRUD for the AbbOverwrite objects. """
     elements = []
 
     def __init__(self, path):
@@ -94,7 +92,7 @@ class AbbsOverwrite:
             self.elements.insert(element_index, abb_overwrite)
             raise NameAlreadyUsed
 
-        self.elements.append(AbbOverwrite(updated_name, updated_text))
+        self.elements.insert(element_index, AbbOverwrite(updated_name, updated_text))
         self.save_elements()
 
     def delete_element(self, abb_overwrite):
