@@ -7,6 +7,10 @@
         {
             "name": "hw",
             "text": "Hello World"
+        },
+        {
+            "name": "Help",
+            "text": "With given matching h - Hello, write 'h' and press space to paste \"Hello\" string."
         }
     ]
 }
