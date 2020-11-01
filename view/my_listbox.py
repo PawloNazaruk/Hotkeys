@@ -8,7 +8,6 @@ class MyListbox(tk.Listbox):
     def __init__(self, elements, *args, **kwargs):
         super().__init__(*args, elements, **kwargs)
         #self.bind('<<ListboxSelect>>', self.on_lb_click)
-        self.bind('<Return>', self.on_lb_click)
         self.bind("<Up>", self.on_press_move_up)
         self.bind("<Down>", self.on_press_move_down)
         self.elements = []
@@ -33,11 +32,6 @@ class MyListbox(tk.Listbox):
         for index, element in enumerate(self.elements, 1):
             text = f"{index}. {self.make_pattern((element.name, element.text))}"
             self.insert(tk.END, text)
-
-    def on_lb_click(self, evt):
-        #w = evt.widget
-        print(self.curselection_value())
-
 
     @classmethod
     def make_pattern(cls, args):
