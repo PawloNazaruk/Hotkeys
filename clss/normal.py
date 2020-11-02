@@ -2,8 +2,6 @@ import json
 import keyboard
 from clss.error_cls import *
 
-from pprint import pprint
-
 
 class Abb:
     """ Abbreviation object which changes written "name" value to the "text".
@@ -13,11 +11,12 @@ class Abb:
         self.text = text
 
     def set_abbreviation(self, abbs_overwrite_elements):
-        """ Sets new abbreviation matching when writing "name"->"text".
+        """
+        Sets new abbreviation matching when writing "name"->"text".
 
         :param abbs_overwrite_elements: list of AbbsOverwrite objects which can modify "text" value.
-        :return:
         """
+
         overwrite_occured = 0
         for abb_overwrite in abbs_overwrite_elements:
             if abb_overwrite.name in self.text:
@@ -28,22 +27,19 @@ class Abb:
             keyboard.add_abbreviation(self.name, self.text)
 
     def update_abbreviation(self, abbs_overwrite_elements):
-        """ Turning off old abbreviation matching, ane sets a new one.
+        """
+        Turning off old abbreviation matching, ane sets a new one.
 
         :param abbs_overwrite_elements: list of AbbsOverwrite objects which can modify "text" value.
-        :return:
         """
-        self.delete_abbreviation()
+        keyboard.remove_word_listener(self.name)
         self.set_abbreviation(abbs_overwrite_elements)
 
     def delete_abbreviation(self):
-        """ ATM keyboard library doesn't allow for disabling
-        abbreviation matching, so I set it as workaround from
-        active matching to make matching to the same "name" value.
-
-        :return:
         """
-        keyboard.add_abbreviation(self.name, self.name)
+        Clears current abbreviation matching.
+        """
+        keyboard.remove_word_listener(self.name)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -59,7 +55,9 @@ class Abb:
 
 
 class Abbs:
-    """ CRUD for the Abb objects. """
+    """
+    CRUD for the Abb objects.
+    """
     elements = []
 
     def __init__(self, path, abbs_overwrite_elements):
@@ -72,7 +70,8 @@ class Abbs:
         [abb.set_abbreviation(abbs_overwrite_elements) for abb in self.elements]
 
     def element_in(self, element):
-        """ Checks if there is already given Abb object in self.elements list.
+        """
+        Checks if there is already given Abb object in self.elements list.
 
         :param element: Abb object looked for.
         :return: True if found else False
@@ -82,7 +81,8 @@ class Abbs:
         return False
 
     def element_name_in(self, element_name):
-        """ Checks if there is already any Abb object with given name attribute in self.elements list.
+        """
+        Checks if there is already any Abb object with given name attribute in self.elements list.
 
         :param element_name: name attribute looked for.
         :return: True if found, else False
@@ -93,12 +93,12 @@ class Abbs:
         return False
 
     def add_element(self, new_element_name, new_element_text):
-        """ Creates new Abb object and add it to the self.elements list if validation is passed
-        and it's abbreviation matching.
+        """
+        Creates new Abb object and add it to the self.elements list
+        if validation is passed and it's abbreviation matching.
 
         :param new_element_name: name attribute
         :param new_element_text: text attribute
-        :return: None
         """
         if new_element_name is "" and new_element_text is "":
             raise FillBothEntries
@@ -114,13 +114,13 @@ class Abbs:
         self.save_elements()
 
     def update_element(self, abb, updated_name, updated_text):
-        """ Updates given Abb object with new attributes if their validation is passed
-         and it's abbreviation matching.
+        """
+        Updates given Abb object with new attributes if their
+        validation is passed and it's abbreviation matching.
 
         :param abb: to be updated
         :param updated_name: new name value
         :param updated_text: new text value
-        :return: None
         """
         if not self.element_in(abb):
             raise SomethingIsNotYes
@@ -131,27 +131,25 @@ class Abbs:
         elif updated_text is "":
             raise FillText
 
-        pprint(f".elements:\n {self.elements}")
+
         element_index = self.elements.index(abb)
-        pprint(f"element_index: {element_index}")
         self.elements.remove(abb)
 
         if self.element_name_in(updated_name):
             self.elements.insert(element_index, abb)
             raise NameAlreadyUsed
 
-        abb.delete_abbreviation()  # Sets previous matching to "name"->"name"
         new_abb = Abb(updated_name, updated_text)
-        new_abb.set_abbreviation(self.abb_overwrite_elements)  # Sets active matching "name"->"text"
+        new_abb.update_abbreviation(self.abb_overwrite_elements)  # Sets active matching "name"->"text"
         self.elements.insert(element_index, new_abb)
         self.save_elements()
 
     def delete_element(self, abb):
-        """ Deletes given Abb object from the self.elements list
-        and it's abbreviation matching.
+        """
+        Deletes given Abb object from the self.elements
+        list and it's abbreviation matching.
 
         :param abb: Abb objected to be deleted
-        :return: None
         """
         if self.element_in(abb):
             abb.delete_abbreviation()  # Sets matching as "name" -> "name"
@@ -161,7 +159,9 @@ class Abbs:
             raise SomethingIsNotYes
 
     def load_elements(self):
-        """ Creates from loaded json a list of Abb objects saved under self.elements.
+        """
+        Creates from loaded json a list of Abb
+        objects saved under self.elements.
 
         :return: Abb(s) list
         """
@@ -169,19 +169,18 @@ class Abbs:
         return [Abb(element["name"], element["text"]) for element in raw_data]
 
     def save_elements(self):
-        """ Unpacks Abb objects from self.elements list to save them in json.
-
-        :return: None
+        """
+        Unpacks Abb objects from self.elements list to save them in json.
         """
         temp_elements = [{"name": abb.name, "text": abb.text} for abb in self.elements]
         self.write_to_json(self.path, temp_elements)
 
     @staticmethod
     def read_json(path):
-        """ Reads content from the json file.
+        """
+        Reads content from the json file.
 
         :param path: path to the file
-        :return: None
         """
         with open(path, "r") as file_ref:
             raw_data = json.load(file_ref)
@@ -189,11 +188,11 @@ class Abbs:
 
     @staticmethod
     def write_to_json(path, my_list):
-        """ Writes content of the my_list to the json file.
+        """
+        Writes content of the my_list to the json file.
 
         :param path: path to the file
         :param my_list: list of dicts
-        :return: None
         """
         with open(path, "r+") as file_ref:
             file_ref.seek(0)

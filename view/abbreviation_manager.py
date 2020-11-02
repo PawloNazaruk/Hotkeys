@@ -12,7 +12,9 @@ from tkinter import ttk
 
 
 class MyApp:
-    """ Main Gui Class """
+    """
+    Main Gui Class
+    """
     def __init__(self, root, abbs, abbs_overwrite):
         self.root = root
         AbbsGroup = namedtuple("AbbGroup", [
@@ -28,9 +30,9 @@ class MyApp:
         self.display_home()  # Displays main gui part.
 
     def display_home(self):
-        """ Displays main window of the gui app.
+        """
+        Displays main window of the gui app.
         Contains form on left side and listbox with control widgets on the right.
-        :return:
         """
         frm_background = tk.Frame(self.root, bg="green", height=800, width=600)
         frm_background.place(relheight=1, relwidth=1)
@@ -38,10 +40,10 @@ class MyApp:
         self.display_list_box_with_control_widgets(frm_background)
 
     def display_form(self, frm_background):
-        """ Setting up widgets.
+        """
+        Setting up widgets.
 
         :param frm_background: total area which can be used by widgets
-        :return:
         """
         # Local frame of given area.
         self.frm_form = tk.Frame(frm_background)
@@ -75,10 +77,10 @@ class MyApp:
         # Bottom "Buttons" row, which are created from other methods.
 
     def display_list_box_with_control_widgets(self, frm_background):
-        """ Setting up widgets.
+        """
+        Setting up widgets.
 
         :param frm_background: total area which can be used by widgets
-        :return:
         """
         self.radio_value = tk.IntVar()  # Var to control focused_abb by radio buttons.
         # Local frame of given area.
@@ -105,6 +107,7 @@ class MyApp:
 
         # Middle "MyListbox" section.
         self.list_box = MyListbox(frm_list, selectmode="SINGLE", bg="white", activestyle="none")
+        self.list_box.bind("<Return>", self.btn_show_item_clicked)
         self.list_box.place(rely=0.10, relheight=0.85, relwidth=0.93)
         self.list_box.insert_elements(self.focused_abb.elements)
         # Attaching slide_bar to the "list_box" widget.
@@ -123,23 +126,23 @@ class MyApp:
         btn_delete_item = ttk.Button(frm_list, text="Delete", command=self.process_delete_item)
         btn_delete_item.place(relx=0.75, rely=0.95, relwidth=0.25, relheight=0.05)
 
-    def btn_show_item_clicked(self):
-        """ Displays in form currently selected element in listbox.
-
-        :return:
+    def btn_show_item_clicked(self, evt=None):
+        """
+        Displays in form currently selected element in listbox.
         """
         abb = self.list_box.curselection_value()
         self.ent_name.delete(0, tk.END)
         self.ent_name.insert(0, abb.name)
         self.txt_replace_to.delete("1.0", tk.END)
         self.txt_replace_to.insert("1.0", abb.text)
+        self.list_box.focus_set()
 
     def process_search_button(self, evt):
-        """ From given event takes written "name" value
+        """
+        From given event takes written "name" value
         and searches if it is present in elements list.
 
         :param evt: Generated event.
-        :return:
         """
         w = evt.widget
         searched_name = w.get()
@@ -151,10 +154,9 @@ class MyApp:
         messagebox.showerror("Error", "Searched name cannot be found.")
 
     def display_menu_bar(self):
-        """ ATM not very useful, can be expanded in the future.
+        """
+        ATM not very useful, can be expanded in the future.
         Displays menu bar to the gui.
-
-        :return:
         """
         menu_bar = tk.Menu(self.root)
         menu_bar.add_command(label="Home", command=lambda: print("Home"))
@@ -162,19 +164,18 @@ class MyApp:
         self.root.config(menu=menu_bar)
 
     def rb_status_switched(self):
-        """ Switching radio button value causes to update focused_abb
+        """
+        Switching radio button value causes to update focused_abb
         and display it elements in the list_box.
-
-        :return:
         """
         self.focused_abb = self.abbs_group[self.radio_value.get()]
         self.list_box.insert_elements(self.focused_abb.elements)
 
     def btn_new_item_clicked(self):
-        """ Clears form widgets from any text and adds button for further adding new item process.
-        To prevent influence of the changes in focused_abb it stores its init value under own new_item_origin_group.
-
-        :return:
+        """
+        Clears form widgets from any text and adds button for
+        further adding new item process. To prevent influence of the changes
+        in focused_abb it stores its init value under own new_item_origin_group.
         """
         self.new_item_origin_group = self.focused_abb  # set origin list.
         self.ent_name.delete(0, tk.END)  # clears content from the "Name: "
@@ -186,11 +187,10 @@ class MyApp:
         btn_cancel.place(relx=0.80, rely=0.95, relwidth=0.17, relheight=0.05)
 
     def process_new_item(self):
-        """ Validation of the given data if succeeded new element is added
+        """
+        Validation of the given data if succeeded new element is added
         and list_box displays updated values.
         Depending on new_item_origin_group it performs process for abbs/abbs_overwrite.
-
-        :return:
         """
         name = self.ent_name.get()
         text = self.txt_replace_to.get("1.0", tk.END)[:-1]  # cut endl sign
@@ -208,6 +208,8 @@ class MyApp:
             try:
                 self.abbs_group.abbs_overwrite.add_element(name, text)
                 # Invoking matching new abbreviation for Abb objects.
+                for abb in self.abbs_group.abbs.elements:
+                    abb.delete_abbreviation()
                 self.abbs_group.abbs.set_all_abbreviation(self.abbs_group.abbs_overwrite.elements)
                 self.list_box.insert_elements(self.abbs_group.abbs_overwrite.elements)
                 self.display_home()
@@ -216,6 +218,11 @@ class MyApp:
                 messagebox.showerror("Error", err.msg)
 
     def btn_update_item_clicked(self):
+        """
+        Fills form widgets with current item text and adds button for
+        further update item process. To prevent influence of the changes
+        in focused_abb it stores its init value under own new_item_origin_group.
+        """
         self.new_item_origin_group = self.focused_abb  # set origin list
         self.ent_name.delete(0, tk.END)  # clears content from the "Name: "
         self.txt_replace_to.delete("1.0", tk.END)  # clears content from the "Replace to: "
@@ -229,18 +236,15 @@ class MyApp:
         btn_cancel.place(relx=0.80, rely=0.95, relwidth=0.17, relheight=0.05)
 
     def process_update_item(self, abb):
-        """ Validation of the given data if succeeded new element is added
+        """
+        Validation of the given data if succeeded new element is added
         and list_box displays updated values.
         Depending on new_item_origin_group it performs process for abbs/abbs_overwrite.
 
         :param abb: updated object
-        :return:
         """
-
         new_name = self.ent_name.get()
         new_text = self.txt_replace_to.get("1.0", tk.END)[:-1]  # cut endl sign
-        print(f"new_name: {new_name}")
-        print(f"new_text: {new_text}")
         # Process of adding new item for abbs.
         if self.new_item_origin_group == self.abbs_group.abbs:
             try:
@@ -255,6 +259,8 @@ class MyApp:
             try:
                 self.abbs_group.abbs_overwrite.update_element(abb, new_name, new_text)
                 # Invoking matching new abbreviation for Abb objects.
+                for abb in self.abbs_group.abbs.elements:
+                    abb.delete_abbreviation()
                 self.abbs_group.abbs.set_all_abbreviation(self.abbs_group.abbs_overwrite.elements)
                 self.list_box.insert_elements(self.abbs_group.abbs_overwrite.elements)
                 self.display_home()
@@ -263,17 +269,26 @@ class MyApp:
                 messagebox.showerror("Error", err.msg)
 
     def process_delete_item(self):
-        """ Deletes currently selected item in list_box, and focused_abb list.
-
-        :return:
+        """
+        Deletes currently selected item in list_box, and focused_abb list.
         """
         abb = self.list_box.curselection_value()
-        self.focused_abb.delete_element(abb)
+
+        if self.focused_abb == self.abbs_group.abbs:
+            self.focused_abb.delete_element(abb)
+
+        if self.focused_abb == self.abbs_group.abbs_overwrite:
+            self.focused_abb.delete_element(abb)
+            print("WOOLOLOLOLOL")
+            for abb in self.abbs_group.abbs.elements:
+                abb.delete_abbreviation()
+            self.abbs_group.abbs.set_all_abbreviation(self.abbs_group.abbs_overwrite.elements)
         self.list_box.insert_elements(self.focused_abb.elements)
 
 
 def report_event(event):
-    """Print a description of an event, based on its attributes.
+    """
+    Print a description of an event, based on its attributes.
     """
     event_name = {"2": "KeyPress", "4": "ButtonPress"}
     print(f'Time: {event.time}')
