@@ -27,6 +27,10 @@
         {
             "name": "@steps",
             "text": "1. Launch the zxc_y6.Main from Final Deliverable.\n2. Load the save from attachment OR progress after act 1.\n3. Go to:\n{code:java}\n coords\n{code}\n4. Observe issue."
+        },
+        {
+            "name": "@Benon",
+            "text": "Beniz"
         }
     ]
 }
