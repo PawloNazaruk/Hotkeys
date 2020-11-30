@@ -28,13 +28,14 @@ class Abb:
         if not overwrite_occured:
             keyboard.add_abbreviation(self.name, self.text)
 
-    def update_abbreviation(self, abbs_overwrite_elements):
+    def update_abbreviation(self, previous_name, abbs_overwrite_elements):
         """
         Turning off old abbreviation matching, ane sets a new one.
 
         :param abbs_overwrite_elements: list of AbbsOverwrite objects which can modify "text" value.
+        :param previous_name: str name of the previous matching, which will be now removed
         """
-        keyboard.remove_word_listener(self.name)
+        keyboard.remove_word_listener(previous_name)
         self.set_abbreviation(abbs_overwrite_elements)
 
     def delete_abbreviation(self):
@@ -133,7 +134,6 @@ class Abbs:
         elif updated_text is "":
             raise FillText
 
-
         element_index = self.elements.index(abb)
         self.elements.remove(abb)
 
@@ -142,7 +142,7 @@ class Abbs:
             raise NameAlreadyUsed
 
         new_abb = Abb(updated_name, updated_text)
-        new_abb.update_abbreviation(self.abb_overwrite_elements)  # Sets active matching "name"->"text"
+        new_abb.update_abbreviation(abb.name, self.abb_overwrite_elements)  # Sets active matching "name"->"text"
         self.elements.insert(element_index, new_abb)
         self.save_elements()
 
