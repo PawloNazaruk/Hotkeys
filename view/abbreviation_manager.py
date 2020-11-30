@@ -1,14 +1,9 @@
+import tkinter as tk
 from collections import namedtuple
-from view.my_listbox import *
-from clss.overwrite import *
 from tkinter import messagebox
 from tkinter import ttk
 
-#import tkinter as tk
-
-
-
-# TODO sliders shouldn't grow with bigger window or set window as static?
+from view.my_listbox import MyListbox
 
 
 class MyApp:

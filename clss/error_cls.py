@@ -1,4 +1,3 @@
-
 class BaseValidationError(ValueError):
     """ Class for marking errors
     """

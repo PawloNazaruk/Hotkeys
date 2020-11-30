@@ -1,7 +1,9 @@
-from view.abbreviation_manager import *
-from clss.normal import *
-from clss.overwrite import *
 import tkinter as tk
+
+from clss.normal import Abbs
+from clss.overwrite import AbbsOverwrite
+from view.abbreviation_manager import MyApp
+
 
 PATH_ABBOVERWRITE = "template/abboverwrite_elements.json"
 PATH_ABB = "template/abb_elements.json"
