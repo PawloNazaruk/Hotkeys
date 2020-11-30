@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 
 from view.my_listbox import MyListbox
+from clss.error_cls import *
 
 
 class MyApp:
