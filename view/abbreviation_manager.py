@@ -104,6 +104,7 @@ class MyApp:
         # Middle "MyListbox" section.
         self.list_box = MyListbox(frm_list, selectmode="SINGLE", bg="white", activestyle="none")
         self.list_box.bind("<Return>", self.btn_show_item_clicked)
+        self.list_box.bind("<Double-Button-1>", self.btn_show_item_clicked)
         self.list_box.place(rely=0.10, relheight=0.85, relwidth=0.93)
         self.list_box.insert_elements(self.focused_abb.elements)
         # Attaching slide_bar to the "list_box" widget.
