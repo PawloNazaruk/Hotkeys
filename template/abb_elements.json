@@ -45,8 +45,16 @@
             "text": "asd"
         },
         {
-            "name": "new_add_3",
-            "text": "asd"
+            "name": "new_add_5",
+            "text": "asd5"
+        },
+        {
+            "name": "tm",
+            "text": "u'\u2122'"
+        },
+        {
+            "name": "@Lorem",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pellentesque, lectus ut lobortis..."
         }
     ]
 }
