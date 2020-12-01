@@ -16,6 +16,7 @@ def main():
     root = tk.Tk()
     root.geometry("800x600")
     root.title("Peon")
+    root.iconbitmap('img/peon.ico')
     myapp = MyApp(root, abbs, abbs_overwrite)
 
     root.mainloop()
