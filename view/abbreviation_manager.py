@@ -108,6 +108,7 @@ class MyApp:
         self.list_box = MyListbox(frm_list, selectmode="SINGLE", bg="white", activestyle="none")
         self.list_box.bind("<Return>", self.btn_show_item_clicked)
         self.list_box.bind("<Double-Button-1>", self.btn_show_item_clicked)
+        self.list_box.bind("<Delete>", self.process_delete_item)
         self.list_box.place(rely=0.10, relheight=0.85, relwidth=0.93)
         self.list_box.insert_elements(self.focused_abb.elements)
         # Attaching slide_bar to the "list_box" widget.
@@ -269,7 +270,7 @@ class MyApp:
             except BaseValidationError as err:
                 messagebox.showerror("Error", err.msg)
 
-    def process_delete_item(self):
+    def process_delete_item(self, evt):
         """
         Deletes currently selected item in list_box, and focused_abb list.
         """
@@ -280,7 +281,6 @@ class MyApp:
 
         if self.focused_abb == self.abbs_group.abbs_overwrite:
             self.focused_abb.delete_element(abb)
-            print("WOOLOLOLOLOL")
             for abb in self.abbs_group.abbs.elements:
                 abb.delete_abbreviation()
             self.abbs_group.abbs.set_all_abbreviation(self.abbs_group.abbs_overwrite.elements)

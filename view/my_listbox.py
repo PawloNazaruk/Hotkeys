@@ -12,6 +12,7 @@ class MyListbox(tk.Listbox):
         #self.bind('<<ListboxSelect>>', self.on_lb_click)
         self.bind("<Up>", self.on_press_move_up)
         self.bind("<Down>", self.on_press_move_down)
+
         self.elements = []
 
     def delete_element(self):
