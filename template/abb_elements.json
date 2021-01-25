@@ -1,60 +1,44 @@
 {
     "elements": [
         {
-            "name": "Help",
-            "text": "With given matching h - Hello, write 'h' and press space to paste \"Hello\" string."
+            "name": "@main",
+            "text": "[@build_main]"
         },
         {
-            "name": "h",
-            "text": "Hello"
+            "name": "@ps4",
+            "text": "[@build_ps4]"
         },
         {
-            "name": "hw",
-            "text": "Hello World"
+            "name": "@xbox",
+            "text": "[@build_xbox]"
         },
         {
-            "name": "@build",
-            "text": "[#build]"
+            "name": "#god_mode",
+            "text": "exec(god_mode, 1)"
         },
         {
-            "name": "@regresion_pass",
-            "text": "Issue no longer occurs on [#build]. Closing.."
+            "name": "#set_level",
+            "text": "exec(SetLevel, 40)"
         },
         {
-            "name": "@regresion_fail",
-            "text": "Issue still occurs on [#build]. Reopening with new media."
+            "name": "[@build_main]",
+            "text": "Build_Main_#xxxx"
         },
         {
-            "name": "@steps",
-            "text": "1. Launch the zxc_y6.Main from Final Deliverable.\n2. Load the save from attachment OR progress after act 1.\n3. Go to:\n{code:java}\n coords\n{code}\n4. Observe issue."
+            "name": "@regression_ok",
+            "text": "Issue no longer occurs on [@build_main]."
         },
         {
-            "name": "q213123",
-            "text": "rwerwr"
+            "name": "@cords",
+            "text": "*Coordinates:*\n{code:java}\n\n{code}"
         },
         {
-            "name": "456456",
-            "text": "345345"
+            "name": "@mesh",
+            "text": "*Mesh:*\n{code:java}\n\n{code}"
         },
         {
-            "name": "ewrqwe",
-            "text": "sdfsdf"
-        },
-        {
-            "name": "123123",
-            "text": "asd"
-        },
-        {
-            "name": "new_add_5",
-            "text": "asd5"
-        },
-        {
-            "name": "tm",
-            "text": "u'\u2122'"
-        },
-        {
-            "name": "@Lorem",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pellentesque, lectus ut lobortis..."
+            "name": "@regression_fail",
+            "text": "Issue still occurs on [@build_main]."
         }
     ]
 }

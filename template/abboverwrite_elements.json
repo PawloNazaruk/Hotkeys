@@ -1,24 +1,16 @@
 {
     "elements": [
         {
-            "name": "Hello World",
-            "text": "Hello World!!!!"
+            "name": "[@build_main]",
+            "text": "Build_main_#xxxx"
         },
         {
-            "name": "[#build]",
-            "text": "my_buildCL4135443"
+            "name": "[@build_ps4]",
+            "text": "Build_ps4_#xxxx\n"
         },
         {
-            "name": "Beniz123",
-            "text": "Benizqwe123"
-        },
-        {
-            "name": "NEW_2",
-            "text": "OLD"
-        },
-        {
-            "name": "Lorem ipsum",
-            "text": "Hello World ipsum"
+            "name": "[@build_xbox]",
+            "text": "Build_xbox_#xxxx"
         }
     ]
 }

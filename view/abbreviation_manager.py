@@ -1,10 +1,10 @@
 import tkinter as tk
 from collections import namedtuple
-from tkinter import messagebox
-from tkinter import ttk
+from tkinter import messagebox, ttk
 
 from view.my_listbox import MyListbox
 from clss.error_cls import *
+from static.style.buttons import set_buttons_styles
 
 
 class MyApp:
@@ -24,6 +24,9 @@ class MyApp:
 
         # self.display_menu_bar()  # Displays menu bar gui part. ATM turned off as it doesn't have big purpose.
         self.display_home()  # Displays main gui part.
+
+        # Initiating style for buttons
+        set_buttons_styles()
 
     def display_home(self):
         """
@@ -177,10 +180,11 @@ class MyApp:
         self.new_item_origin_group = self.focused_abb  # set origin list.
         self.ent_name.delete(0, tk.END)  # clears content from the "Name: "
         self.txt_replace_to.delete("1.0", tk.END)  # clears content from the "Replace to: "
+
         # Bottom "Buttons" row in form.
-        btn_submit = ttk.Button(self.frm_form, text="Submit", command=self.process_new_item)
+        btn_submit = ttk.Button(self.frm_form, text="Submit", command=self.process_new_item, style='Submit.TButton')
         btn_submit.place(relx=0.63, rely=0.95, relwidth=0.17, relheight=0.05)
-        btn_cancel = ttk.Button(self.frm_form, text="Cancel", command=self.display_home)
+        btn_cancel = ttk.Button(self.frm_form, text="Cancel", command=self.display_home, style='Cancel.TButton')
         btn_cancel.place(relx=0.80, rely=0.95, relwidth=0.17, relheight=0.05)
 
     def process_new_item(self):
@@ -227,9 +231,9 @@ class MyApp:
 
         self.ent_name.insert(0, abb.name)
         self.txt_replace_to.insert("1.0", abb.text)
-        btn_submit = ttk.Button(self.frm_form, text="Submit", command=lambda: self.process_update_item(abb))
+        btn_submit = ttk.Button(self.frm_form, text="Submit", command=lambda: self.process_update_item(abb), style="Submit.TButton")
         btn_submit.place(relx=0.63, rely=0.95, relwidth=0.17, relheight=0.05)
-        btn_cancel = ttk.Button(self.frm_form, text="Cancel", command=self.display_home)
+        btn_cancel = ttk.Button(self.frm_form, text="Cancel", command=self.display_home, style="Cancel.TButton")
         btn_cancel.place(relx=0.80, rely=0.95, relwidth=0.17, relheight=0.05)
 
     def process_update_item(self, abb):
