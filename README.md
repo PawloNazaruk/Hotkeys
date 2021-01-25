@@ -4,7 +4,7 @@
 CRUD GUI for managing text replacements, which can be used in windows os (notepad, browsers, etc.)
 It also allows for creating templates for matched text replacements.
 
-For example mapping 'tm' with u'™' will create matching,
+For example mapping 'tm' with '™' will create matching,
 which will be replacing every written 'tm' followed by a space with a ™ symbol.
 
 ## Requirements
@@ -19,7 +19,9 @@ space to induce text replacement.
 Press Submit.
 
 E.g.
+
 Name: @Lorem
+
 Replace to: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pellentesque, lectus ut lobortis...
 
 After writing @Lorem followed by a space the @Lorem will be replaced with it's own content:
@@ -36,7 +38,9 @@ When text is found then replacement will happen.
 The "Replace to:" value is resposible for replacing found "Name" value with it's own content text.
 
 E.g.
+
 Name: Lorem ipsum
+
 Replace to: Hello World ipsum
 
 Created Var like this will search every Tag "Replace to" content, if matching will be found then
