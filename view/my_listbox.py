@@ -79,7 +79,7 @@ class MyListbox(tk.Listbox):
 
     def on_press_move_down(self, evt):
         """
-        Moves currently selection upwards by pressing "DOWN" keyboard button.
+        Moves currently selection downwards by pressing "DOWN" keyboard button.
 
         :param evt: event created after clicking "Down" keyboard button.
         """
