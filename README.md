@@ -8,7 +8,7 @@ For example mapping 'tm' with '™' will create matching,
 which will be replacing every written 'tm' followed by a space with a ™ symbol.
 
 ## Requirements
-You need Python with installed Keyboard to use this app.
+You need Python 3.6 and library "Keyboard" to use this app.
 
 ## How to use
 ### Tags
